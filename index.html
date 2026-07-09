@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StadiumPulse AI - FIFA World Cup 2026 Smart Hub</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome for beautiful icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- CSS stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Top Header Bar -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="fifa-brand">
+          <span class="brand-text">FIFA 26</span>
+          <span class="stadium-tag">METLIFE STADIUM</span>
+        </div>
+        <div class="app-title-container">
+          <i class="fa-solid fa-brain-circuit pulse-icon"></i>
+          <h1>StadiumPulse <span class="accent-text">AI</span></h1>
+        </div>
+      </div>
+
+      <!-- Live Match Ticker -->
+      <div class="match-ticker">
+        <div class="ticker-item live-indicator" id="live-indicator-wrapper">
+          <span class="pulse-dot"></span> LIVE
+        </div>
+        <div class="ticker-item match-score">
+          <img src="https://flagcdn.com/w40/us.png" alt="USA Flag" class="flag-icon">
+          <span class="team-name">USA</span>
+          <span class="score">2 - 1</span>
+          <span class="team-name">MEX</span>
+          <img src="https://flagcdn.com/w40/mx.png" alt="Mexico Flag" class="flag-icon">
+        </div>
+        <div class="ticker-item match-time" id="ticker-match-time">78'</div>
+        <div class="ticker-item stadium-stats">
+          <i class="fa-solid fa-users"></i> <span id="ticker-occupancy">81,300 (98%)</span>
+        </div>
+        <div class="ticker-item temp-stats">
+          <i class="fa-solid fa-temperature-half"></i> <span>74°F / 23°C</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <button class="tab-btn active" id="tab-fan" onclick="switchTab('fan')">
+          <i class="fa-solid fa-user-astronaut"></i> Fan Companion
+        </button>
+        <button class="tab-btn" id="tab-ops" onclick="switchTab('ops')">
+          <i class="fa-solid fa-sliders"></i> Operations Control
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+      
+      <!-- ============================================== -->
+      <!-- FAN PORTAL VIEW -->
+      <!-- ============================================== -->
+      <section class="portal-view active" id="view-fan">
+        <div class="portal-grid fan-grid">
+          
+          <!-- Column 1: AI Match Assistant "Copa" & Audio Companion -->
+          <div class="dashboard-card glass-panel chat-card">
+            <div class="card-header">
+              <div class="header-title">
+                <i class="fa-solid fa-robot"></i>
+                <div>
+                  <h3>"Copa" AI Assistant</h3>
+                  <p class="subtitle">FIFA 26 Multilingual Virtual Guide</p>
+                </div>
+              </div>
+              <!-- Language Selector -->
+              <div class="language-selector">
+                <select id="fan-lang" onchange="changeLanguage()">
+                  <option value="en">🇺🇸 EN</option>
+                  <option value="es">🇲🇽 ES</option>
+                  <option value="fr">🇨🇦 FR</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Seat input & profile -->
+            <div class="user-meta-inputs">
+              <div class="input-group">
+                <label for="fan-seat"><i class="fa-solid fa-chair"></i> Your Seat</label>
+                <input type="text" id="fan-seat" placeholder="Sec 112, Row M, Seat 5" value="Sec 112, Row M, Seat 5" onchange="updateSeatLocation()">
+              </div>
+              <div class="input-group">
+                <label for="fan-needs"><i class="fa-solid fa-universal-access"></i> Assist Mode</label>
+                <select id="fan-needs" onchange="updateAccessibilityMode()">
+                  <option value="none">Standard Route</option>
+                  <option value="wheelchair">Wheelchair / Step-Free</option>
+                  <option value="stroller">Stroller Friendly</option>
+                  <option value="sensory">Sensory Sensitive</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Chat Message Feed -->
+            <div class="chat-messages" id="fan-chat-messages">
+              <div class="message system-msg">
+                <p>Welcome! "Copa" AI is online. Powered by StadiumPulse GenAI to help with routes, food, transport, translations, and tournament rules.</p>
+              </div>
+              <div class="message ai-msg">
+                <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="msg-content">
+                  <p id="welcome-text">Hello! I am Copa, your FIFA 26 smart stadium assistant. I know your seat is in <strong>Section 112</strong>. How can I help you navigate MetLife Stadium today?</p>
+                  <!-- Audio Synth Trigger -->
+                  <button class="audio-speak-btn" onclick="speakCopaResponse('welcome-text')">
+                    <i class="fa-solid fa-volume-high"></i> Listen to Copa
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Audio Waveform Live Visualizer (displays when speaking) -->
+            <div class="audio-waveform-box" id="audio-waveform" style="display: none;">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-text">Copa AI Audio Companion Speaking...</span>
+              <button class="wave-stop-btn" onclick="stopSpeaking()"><i class="fa-solid fa-square"></i></button>
+            </div>
+
+            <!-- Suggested Questions -->
+            <div class="chat-suggestions">
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('nearest_restroom')">🚻 Restrooms</span>
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('taco_stand')">🌮 Find Tacos</span>
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('metro_route')">🚇 Metro Terminal</span>
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('accessibility')">♿ Accessibility Lift</span>
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('translate_phrase')">🗣️ Translate phrase</span>
+              <span class="suggestion-tag" onclick="sendSuggestedQuestion('match_fact')">⚽ Match Stats</span>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="chat-input-bar">
+              <input type="text" id="fan-chat-input" placeholder="Ask Copa about routes, concessions, schedules..." onkeypress="handleChatKey(event)">
+              <button class="send-btn" onclick="sendFanMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+
+          <!-- Column 2: Interactive SVG Stadium Map with Route Tracing -->
+          <div class="dashboard-card glass-panel map-card">
+            <div class="card-header">
+              <div class="header-title">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <div>
+                  <h3>Interactive Smart Map</h3>
+                  <p class="subtitle">Real-time crowd overlays and path routing</p>
+                </div>
+              </div>
+              <!-- Map Layer Controls -->
+              <div class="map-controls">
+                <button class="map-layer-btn active" id="btn-density" onclick="toggleMapLayer('density')">
+                  <i class="fa-solid fa-fire-flame-simple"></i> Crowd Density
+                </button>
+                <button class="map-layer-btn" id="btn-facilities" onclick="toggleMapLayer('facilities')">
+                  <i class="fa-solid fa-circle-info"></i> Icons
+                </button>
+              </div>
+            </div>
+
+            <!-- Map Viewport -->
+            <div class="map-viewport">
+              <svg id="stadium-svg" viewBox="0 0 800 600" width="100%" height="100%">
+                <defs>
+                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+                  </pattern>
+                  <radialGradient id="field-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#00ff66" stop-opacity="0.15" />
+                    <stop offset="100%" stop-color="#00ff66" stop-opacity="0" />
+                  </radialGradient>
+                  <!-- Pulse filters -->
+                  <filter id="glow-neon" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="8" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                  <filter id="glow-emergency" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                <rect width="800" height="600" fill="url(#grid)" />
+
+                <!-- The Soccer Pitch Glow -->
+                <ellipse cx="400" cy="300" rx="140" ry="100" fill="url(#field-glow)" />
+
+                <!-- Outer Metro Station Link -->
+                <g class="map-landmark" id="station-metro" transform="translate(100, 100)">
+                  <circle cx="0" cy="0" r="22" class="landmark-bg metro" />
+                  <i class="fa-solid fa-train text-icon"></i>
+                  <text x="0" y="38" text-anchor="middle" class="landmark-label">Metro Terminal</text>
+                </g>
+
+                <!-- Outer Parking Areas -->
+                <g class="map-landmark" id="parking-lot-a" transform="translate(700, 120)">
+                  <circle cx="0" cy="0" r="20" class="landmark-bg parking" />
+                  <text x="0" y="5" text-anchor="middle" class="landmark-letter">P</text>
+                  <text x="0" y="35" text-anchor="middle" class="landmark-label">Lot A (Rideshare)</text>
+                </g>
+                <g class="map-landmark" id="parking-lot-b" transform="translate(720, 480)">
+                  <circle cx="0" cy="0" r="20" class="landmark-bg parking" />
+                  <text x="0" y="5" text-anchor="middle" class="landmark-letter">P</text>
+                  <text x="0" y="35" text-anchor="middle" class="landmark-label">Lot B (General)</text>
+                </g>
+
+                <!-- Gate Nodes (Outer Ring of Stadium Structure) -->
+                <g class="map-node" id="node-gate-a" transform="translate(400, 120)">
+                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="A" />
+                  <text x="0" y="5" text-anchor="middle" class="node-txt">A</text>
+                  <text x="0" y="-22" text-anchor="middle" class="node-label">Gate A</text>
+                </g>
+                <g class="map-node" id="node-gate-b" transform="translate(620, 300)">
+                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="B" />
+                  <text x="0" y="5" text-anchor="middle" class="node-txt">B</text>
+                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate B</text>
+                </g>
+                <g class="map-node" id="node-gate-c" transform="translate(400, 480)">
+                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="C" />
+                  <text x="0" y="5" text-anchor="middle" class="node-txt">C</text>
+                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate C</text>
+                </g>
+                <g class="map-node" id="node-gate-d" transform="translate(180, 300)">
+                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="D" />
+                  <text x="0" y="5" text-anchor="middle" class="node-txt">D</text>
+                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate D</text>
+                </g>
+
+                <!-- Stadium Oval Structure Rings (Concourses) -->
+                <ellipse cx="400" cy="300" rx="190" ry="135" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+                <ellipse cx="400" cy="300" rx="220" ry="160" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+
+                <!-- Stadium Seat Blocks -->
+                <!-- Sectors Top Left -->
+                <path d="M 330 185 A 190 135 0 0 0 250 250 L 225 240 A 220 160 0 0 1 315 165 Z" class="seat-block block-green" id="block-110" data-block="110" onclick="selectSeatBlock('110')" />
+                <!-- Sector Top (Sec 112 near Gate A) -->
+                <path d="M 335 180 A 190 135 0 0 1 465 180 L 475 160 A 220 160 0 0 0 325 160 Z" class="seat-block block-green" id="block-112" data-block="112" onclick="selectSeatBlock('112')" />
+                <!-- Sector Top Right -->
+                <path d="M 470 185 A 190 135 0 0 1 550 250 L 575 240 A 220 160 0 0 0 485 165 Z" class="seat-block block-orange" id="block-114" data-block="114" onclick="selectSeatBlock('114')" />
+                <!-- Sector Bottom Right -->
+                <path d="M 550 350 A 190 135 0 0 1 470 415 L 485 435 A 220 160 0 0 0 575 360 Z" class="seat-block block-green" id="block-118" data-block="118" onclick="selectSeatBlock('118')" />
+                <!-- Sector Bottom -->
+                <path d="M 465 420 A 190 135 0 0 1 335 420 L 325 440 A 220 160 0 0 0 475 440 Z" class="seat-block block-red" id="block-120" data-block="120" onclick="selectSeatBlock('120')" />
+                <!-- Sector Bottom Left -->
+                <path d="M 250 350 A 190 135 0 0 0 330 415 L 315 435 A 220 160 0 0 1 225 360 Z" class="seat-block block-green" id="block-122" data-block="122" onclick="selectSeatBlock('122')" />
+                <!-- Sector Left Mid -->
+                <path d="M 245 260 A 190 135 0 0 0 245 340 L 220 345 A 220 160 0 0 1 220 255 Z" class="seat-block block-yellow" id="block-104" data-block="104" onclick="selectSeatBlock('104')" />
+                <!-- Sector Right Mid -->
+                <path d="M 555 260 A 190 135 0 0 1 555 340 L 580 345 A 220 160 0 0 0 580 255 Z" class="seat-block block-green" id="block-116" data-block="116" onclick="selectSeatBlock('116')" />
+
+                <!-- Text labels on seat blocks -->
+                <text x="400" y="145" class="block-label">112</text>
+                <text x="515" y="195" class="block-label">114</text>
+                <text x="595" y="305" class="block-label">116</text>
+                <text x="515" y="415" class="block-label">118</text>
+                <text x="400" y="465" class="block-label">120</text>
+                <text x="285" y="415" class="block-label">122</text>
+                <text x="205" y="305" class="block-label">104</text>
+                <text x="285" y="195" class="block-label">110</text>
+
+                <!-- Facilities Icons -->
+                <g class="map-facility" id="fac-restroom-114" transform="translate(520, 230)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg" />
+                  <text x="0" y="3" class="facility-icon">🚻</text>
+                </g>
+                <g class="map-facility" id="fac-restroom-122" transform="translate(280, 370)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg" />
+                  <text x="0" y="3" class="facility-icon">🚻</text>
+                </g>
+                <g class="map-facility" id="fac-food-tacos" transform="translate(270, 230)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg" />
+                  <text x="0" y="3" class="facility-icon">🌮</text>
+                </g>
+                <g class="map-facility" id="fac-food-burgers" transform="translate(530, 370)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg" />
+                  <text x="0" y="3" class="facility-icon">🍔</text>
+                </g>
+                <g class="map-facility" id="fac-elevator" transform="translate(210, 275)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg special" />
+                  <text x="0" y="3.5" class="facility-icon small">♿</text>
+                </g>
+                <g class="map-facility" id="fac-aid" transform="translate(400, 445)">
+                  <circle cx="0" cy="0" r="10" class="facility-bg" />
+                  <text x="0" y="3.5" class="facility-icon small">🩺</text>
+                </g>
+
+                <!-- Emergency Evacuation Blinking Vectors (drawn in JS or hidden path arrays) -->
+                <g id="evacuation-vectors" style="display: none;">
+                  <line x1="400" y1="170" x2="400" y2="120" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="510" y1="205" x2="620" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="570" y1="300" x2="620" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="510" y1="395" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="400" y1="430" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="290" y1="395" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="230" y1="300" x2="180" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                  <line x1="290" y1="205" x2="400" y2="120" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
+                </g>
+
+                <!-- Navigation Route Overlay Path -->
+                <path id="route-path" d="" fill="none" stroke="#00f3ff" stroke-width="4" stroke-dasharray="8, 6" filter="url(#glow-neon)" style="display: none;" />
+                
+                <!-- Highlight Indicator (Seat marker) -->
+                <g id="seat-marker" transform="translate(0,0)" style="display:none;">
+                  <circle cx="0" cy="0" r="10" class="marker-pulse-outer" />
+                  <circle cx="0" cy="0" r="5" class="marker-pulse-inner" />
+                </g>
+              </svg>
+            </div>
+            
+            <!-- Map Legend -->
+            <div class="map-legend">
+              <div class="legend-title">Density Heatmap:</div>
+              <div class="legend-items">
+                <span class="legend-color density-green"></span> Low (< 5 min queue)
+                <span class="legend-color density-yellow"></span> Moderate (5-10 min)
+                <span class="legend-color density-orange"></span> Busy (10-20 min)
+                <span class="legend-color density-red"></span> Congested (> 20 min)
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Sustainability, Smart Pre-order & Transit -->
+          <div class="dashboard-card glass-panel fan-sidebar-card">
+            
+            <!-- NEW: GenAI Smart Food Pre-order & Pick-up Optimizer -->
+            <div class="sidebar-section">
+              <div class="section-title">
+                <i class="fa-solid fa-burger"></i>
+                <h4>AI Concession Pre-Order</h4>
+              </div>
+              <p class="section-desc">GenAI schedules pickup windows to avoid concourse queues.</p>
+              
+              <div class="food-order-form">
+                <div class="form-row">
+                  <label>Select Item</label>
+                  <select id="food-item-select">
+                    <option value="tacos">🌮 Championship Taco Basket ($12.00)</option>
+                    <option value="burger">🍔 Big Kick Beef Burger ($14.50)</option>
+                    <option value="pretzel">🥨 Golden Goal Soft Pretzel ($7.00)</option>
+                  </select>
+                </div>
+                <button class="action-btn-green" onclick="optimizeFoodOrder()"><i class="fa-solid fa-clock-rotate-left"></i> Optimize Order Time</button>
+              </div>
+
+              <!-- Food Output Box -->
+              <div class="food-results-box" id="food-results" style="display: none;">
+                <div class="food-header-row">
+                  <span class="food-item-title" id="food-title-res">Championship Tacos</span>
+                  <span class="food-badge" id="food-time-res">15:12 Pickup</span>
+                </div>
+                <p class="food-desc" id="food-desc-res">GenAI allocated window at Concourse Sec 110. Your queue wait is optimized down to 1.5 minutes. (Bypasses general 8-min queue).</p>
+                <div class="food-barcode-stub">
+                  <div class="fake-barcode"></div>
+                  <span class="barcode-txt">ORDER #ST-482910</span>
+                </div>
+              </div>
+            </div>
+
+            <hr class="card-divider">
+
+            <!-- Commute & Smart Parking Advisor -->
+            <div class="sidebar-section">
+              <div class="section-title">
+                <i class="fa-solid fa-bus-simple"></i>
+                <h4>Commute & Transit Planner</h4>
+              </div>
+              <div class="transit-form">
+                <div class="form-row">
+                  <label><i class="fa-solid fa-map-pin"></i> From</label>
+                  <select id="commute-origin">
+                    <option value="manhattan">🏙️ Manhattan (Penn Station)</option>
+                    <option value="newark">✈️ Newark Airport (EWR)</option>
+                    <option value="secaucus">🚉 Secaucus Junction</option>
+                    <option value="local">🚗 Local Parking Lot B</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label><i class="fa-solid fa-leaf"></i> Focus</label>
+                  <select id="commute-preference">
+                    <option value="fastest">⚡ Fastest Route</option>
+                    <option value="eco">🌱 Lowest Carbon Footprint</option>
+                    <option value="accessible">♿ Accessible (Step-free)</option>
+                  </select>
+                </div>
+                <button class="action-btn" onclick="calculateCommute()"><i class="fa-solid fa-calculator"></i> Calculate Commute</button>
+              </div>
+
+              <!-- Journey Card -->
+              <div class="transit-results-box" id="transit-results" style="display: none;">
+                <div class="transit-summary">
+                  <div class="summary-stat">
+                    <span class="lbl">ETA</span>
+                    <span class="val" id="transit-eta">42 mins</span>
+                  </div>
+                  <div class="summary-stat">
+                    <span class="lbl">Carbon</span>
+                    <span class="val green-text" id="transit-carbon">-65% 🌱</span>
+                  </div>
+                  <div class="summary-stat">
+                    <span class="lbl">Best Gate</span>
+                    <span class="val" id="transit-gate">Gate D</span>
+                  </div>
+                </div>
+                <div class="timeline" id="transit-timeline">
+                  <!-- JS fills this -->
+                </div>
+              </div>
+            </div>
+
+            <hr class="card-divider">
+
+            <!-- Sustainability Tracker -->
+            <div class="sidebar-section">
+              <div class="section-title">
+                <i class="fa-solid fa-seedling"></i>
+                <h4>Eco-Fan Challenge</h4>
+              </div>
+              <p class="section-desc">Participate in MetLife Stadium's FIFA 26 zero-waste goal and unlock discount vouchers!</p>
+              
+              <div class="eco-progress">
+                <div class="eco-label-row">
+                  <span>Carbon Offset points</span>
+                  <strong id="eco-pts-display">120 / 200 PTS</strong>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill eco-color" id="eco-progress-fill" style="width: 60%;"></div>
+                </div>
+              </div>
+
+              <div class="eco-actions-checklist">
+                <div class="eco-check-item completed">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Arrived via Transit (+50 pts)</span>
+                </div>
+                <div class="eco-check-item completed">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Used Digital Mobile Ticket (+20 pts)</span>
+                </div>
+                <div class="eco-check-item" id="eco-cup-item" onclick="completeEcoAction('cup')">
+                  <i class="fa-regular fa-circle" id="eco-cup-icon"></i>
+                  <span>Return reusable drink cup (+50 pts)</span>
+                </div>
+                <div class="eco-check-item" id="eco-waste-item" onclick="completeEcoAction('waste')">
+                  <i class="fa-regular fa-circle" id="eco-waste-icon"></i>
+                  <span>Sort food waste in green bin (+30 pts)</span>
+                </div>
+              </div>
+              <div class="voucher-box" id="voucher-box" style="display: none;">
+                <div class="voucher-header">🎉 Voucher Unlocked!</div>
+                <div class="voucher-body">
+                  <span class="voucher-code">ECOWORLD26</span>
+                  <span class="voucher-desc">15% off any merch at Store Sec 112</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- OPERATIONS COMMAND VIEW -->
+      <!-- ============================================== -->
+      <section class="portal-view" id="view-ops">
+        <div class="portal-grid ops-grid">
+          
+          <!-- Column 1: Live Stadium Telemetry & Sentiment Analyzer -->
+          <div class="dashboard-card glass-panel telemetry-card">
+            <div class="card-header">
+              <div class="header-title">
+                <i class="fa-solid fa-chart-line"></i>
+                <div>
+                  <h3>Stadium Operations Feed</h3>
+                  <p class="subtitle">Real-time telemetry and threshold alerts</p>
+                </div>
+              </div>
+              <div class="system-status-pill green-pill" id="system-status-indicator">
+                <span class="status-dot"></span> System Normal
+              </div>
+            </div>
+
+            <!-- Telemetry Metrics Grid -->
+            <div class="metrics-grid">
+              
+              <!-- Gate A Queue -->
+              <div class="metric-box" id="metric-gate-a">
+                <div class="metric-header">
+                  <span>Gate A (North Entrance)</span>
+                  <span class="metric-badge success">Light</span>
+                </div>
+                <div class="metric-value"><span id="val-gate-a">4</span> mins</div>
+                <div class="metric-sub">Queue: ~120 fans • 8 Turnstiles Active</div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill bg-success" id="bar-gate-a" style="width: 15%;"></div>
+                </div>
+              </div>
+
+              <!-- Gate B Queue -->
+              <div class="metric-box" id="metric-gate-b">
+                <div class="metric-header">
+                  <span>Gate B (East Entrance)</span>
+                  <span class="metric-badge warning">Busy</span>
+                </div>
+                <div class="metric-value"><span id="val-gate-b">14</span> mins</div>
+                <div class="metric-sub">Queue: ~480 fans • 7 Turnstiles Active</div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill bg-warning" id="bar-gate-b" style="width: 60%;"></div>
+                </div>
+              </div>
+
+              <!-- Gate C Queue -->
+              <div class="metric-box" id="metric-gate-c">
+                <div class="metric-header">
+                  <span>Gate C (South Entrance)</span>
+                  <span class="metric-badge danger">Heavy</span>
+                </div>
+                <div class="metric-value"><span id="val-gate-c">26</span> mins</div>
+                <div class="metric-sub">Queue: ~920 fans • 5 Turnstiles Active</div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill bg-danger" id="bar-gate-c" style="width: 88%;"></div>
+                </div>
+              </div>
+
+              <!-- Gate D Queue -->
+              <div class="metric-box" id="metric-gate-d">
+                <div class="metric-header">
+                  <span>Gate D (West Entrance)</span>
+                  <span class="metric-badge success">Light</span>
+                </div>
+                <div class="metric-value"><span id="val-gate-d">7</span> mins</div>
+                <div class="metric-sub">Queue: ~190 fans • 8 Turnstiles Active</div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill bg-success" id="bar-gate-d" style="width: 25%;"></div>
+                </div>
+              </div>
+
+              <!-- Water & Sanitary Pressures -->
+              <div class="metric-box inline-box">
+                <div class="box-icon"><i class="fa-solid fa-droplet blue-text"></i></div>
+                <div class="box-content">
+                  <div class="box-title">Sanitary Water Flow</div>
+                  <div class="box-val" id="val-water">58 PSI <span class="sub-text">(Normal)</span></div>
+                </div>
+              </div>
+
+              <!-- Waste Levels -->
+              <div class="metric-box inline-box">
+                <div class="box-icon"><i class="fa-solid fa-trash-can green-text"></i></div>
+                <div class="box-content">
+                  <div class="box-title">Waste Bins capacity</div>
+                  <div class="box-val" id="val-waste">41% <span class="sub-text">(620kg Sorted Today)</span></div>
+                </div>
+              </div>
+
+              <!-- Solar & Grid Power -->
+              <div class="metric-box inline-box">
+                <div class="box-icon"><i class="fa-solid fa-solar-panel yellow-text"></i></div>
+                <div class="box-content">
+                  <div class="box-title">Eco-Grid Generation</div>
+                  <div class="box-val" id="val-energy">320 kW <span class="sub-text">(34% Solar Offsetting)</span></div>
+                </div>
+              </div>
+
+              <!-- First Aid / Medical Cases -->
+              <div class="metric-box inline-box">
+                <div class="box-icon"><i class="fa-solid fa-heart-pulse red-text"></i></div>
+                <div class="box-content">
+                  <div class="box-title">Active Medical Cases</div>
+                  <div class="box-val" id="val-incidents">0 <span class="sub-text">Dispatch Ready</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operations Logs Feed -->
+            <div class="ops-logs-section">
+              <h4><i class="fa-solid fa-clock-rotate-left"></i> Live Event & AI Dispatch Logs</h4>
+              <div class="logs-feed" id="ops-logs-feed">
+                <div class="log-entry system">
+                  <span class="log-time">14:10</span>
+                  <span class="log-msg">Operations Database initialized for Match 43. USA vs MEX.</span>
+                </div>
+                <div class="log-entry ai">
+                  <span class="log-time">14:22</span>
+                  <span class="log-msg">🤖 StadiumPulse AI: Optimal entry routing plan distributed to 45,000 Fan Portal clients.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: AI Decision Support, Sentiment Analyzer & Evac Simulator -->
+          <div class="dashboard-card glass-panel decisions-card">
+            <div class="card-header">
+              <div class="header-title">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <div>
+                  <h3>AI Operations Copilot</h3>
+                  <p class="subtitle">Simulate incidents and view real-time GenAI suggestions</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW: GenAI Crowdsourced Social Sentiment Analyzer -->
+            <div class="ops-sentiment-section">
+              <div class="sentiment-gauge-wrapper">
+                <div class="sentiment-meta">
+                  <span class="gauge-lbl">Crowd Sentiment Score</span>
+                  <strong class="gauge-val" id="sentiment-score-val">84% Positive</strong>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill sentiment-color" id="sentiment-fill" style="width: 84%;"></div>
+                </div>
+              </div>
+              <!-- Social feed scraper feed -->
+              <div class="sentiment-ticker-box">
+                <div class="ticker-inner" id="social-feedback-ticker">
+                  <div class="social-post positive"><span class="user-handle">@fan_us99:</span> "Incredible goal by McKennie! Section 112 is rockin! 🇺🇸⚽"</div>
+                  <div class="social-post neutral"><span class="user-handle">@metlife_goer:</span> "Arrived via train. Security gates moved pretty fast. Nice weather."</div>
+                  <div class="social-post negative"><span class="user-handle">@mex_futbol_fan:</span> "Stuck in gate C ticket queue for 20 mins already. Moving very slow! 😤"</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scenario Simulator Controls -->
+            <div class="simulation-controller">
+              <h5><i class="fa-solid fa-gamepad"></i> Event Simulation Deck</h5>
+              <p class="sec-help">Trigger stadium events to test AI adaptive logic & notifications.</p>
+              
+              <div class="simulator-buttons">
+                <button class="sim-btn" id="sim-rain" onclick="triggerSimulation('rain')">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i> Sudden Downpour
+                </button>
+                <button class="sim-btn" id="sim-metro" onclick="triggerSimulation('metro')">
+                  <i class="fa-solid fa-train-subway"></i> Metro Delay Alert
+                </button>
+                <button class="sim-btn" id="sim-surge" onclick="triggerSimulation('surge')">
+                  <i class="fa-solid fa-users-viewfinder"></i> Sector 120 Crowd Surge
+                </button>
+                <button class="sim-btn" id="sim-power" onclick="triggerSimulation('power')">
+                  <i class="fa-solid fa-bolt-lightning"></i> Grid Power Drop
+                </button>
+                <!-- NEW Evacuation Simulator -->
+                <button class="sim-btn critical" id="sim-evac" onclick="triggerSimulation('evac')">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Emergency Evacuate
+                </button>
+                <button class="sim-btn danger" id="sim-reset" onclick="triggerSimulation('reset')">
+                  <i class="fa-solid fa-rotate-left"></i> Reset System
+                </button>
+              </div>
+            </div>
+
+            <!-- GenAI Recommendation Center -->
+            <div class="ops-ai-recommendations">
+              <h5><i class="fa-solid fa-lightbulb"></i> Dynamic GenAI Action Items</h5>
+              <div class="ai-cards-container" id="ai-rec-container">
+                <div class="ai-rec-card info-card">
+                  <div class="rec-icon"><i class="fa-solid fa-circle-info"></i></div>
+                  <div class="rec-content">
+                    <h6>Dynamic Entry Routing Active</h6>
+                    <p>GenAI recommends guiding arriving fans in Lot B to utilize Gate D instead of Gate C. Gate D currently boasts 60% lower queue time. Digital displays updated.</p>
+                    <div class="rec-actions">
+                      <button class="rec-btn approve" onclick="executeOpsAction('reroute_d')">Reroute Active</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operations Command Input Console -->
+            <div class="ops-console-input-section">
+              <h5><i class="fa-solid fa-terminal"></i> Natural Language Command Console</h5>
+              <p class="console-help">Instruct StadiumPulse AI in plain English. e.g. "dispatch security to gate C" or "run eco optimization check".</p>
+              <div class="console-input-row">
+                <span class="prompt-symbol">&gt;_</span>
+                <input type="text" id="ops-command-input" placeholder="Type a prompt for StadiumPulse Copilot..." onkeypress="handleOpsCommandKey(event)">
+                <button class="ops-exec-btn" onclick="executeOpsCommand()"><i class="fa-solid fa-play"></i> Execute</button>
+              </div>
+              <div class="console-response-box" id="ops-console-response" style="display: none;">
+                <!-- AI feedback output -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="app-footer">
+      <div>FIFA World Cup 2026 Smart Stadium Platform • Powered by Gemini GenAI</div>
+      <div>Current Local Time: <span id="current-time">2026-07-08 14:30:37</span></div>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript application file -->
+  <script src="app.js"></script>
+</body>
+</html>
