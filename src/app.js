@@ -519,34 +519,55 @@ function renderLeaderboardRows() {
 
 function renderCertificatesGrid() {
   const container = document.getElementById('certificates-grid-container');
-  if (!container) return;
-
+  const overviewGrid = document.getElementById('overview-certs-grid');
+  
   const userCerts = store.getState().user.certificates;
-  container.innerHTML = '';
 
-  if (userCerts.length === 0) {
-    container.innerHTML = `<div class="glass-card" style="grid-column: 1 / -1; align-items:center; padding:var(--space-4); text-align:center;">
-      <i class="fa-solid fa-ribbon" style="font-size:2.5rem; color:var(--text-muted);"></i>
-      <p style="color:var(--text-muted); font-size:0.9rem; margin-top:var(--space-1);">No certificates earned yet. Enroll and complete syllabus courses to earn credentials.</p>
-    </div>`;
-    return;
+  if (container) {
+    container.innerHTML = '';
+    if (userCerts.length === 0) {
+      container.innerHTML = `<div class="glass-card" style="grid-column: 1 / -1; align-items:center; padding:var(--space-2); text-align:center;">
+        <i class="fa-solid fa-award" style="font-size:1.5rem; color:var(--text-muted);"></i>
+        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">No certificates earned yet. Enroll and complete syllabus courses to earn credentials.</p>
+      </div>`;
+    } else {
+      userCerts.forEach(cert => {
+        const card = document.createElement('div');
+        card.className = 'glass-card card-premium';
+        card.style.borderLeftColor = 'var(--color-success)';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge-tag" style="background:rgba(16,185,129,0.15); border-color:var(--color-success); color:var(--color-success);">COMPLETED</span>
+            <i class="fa-solid fa-certificate" style="color:var(--color-warning); font-size:1.1rem;"></i>
+          </div>
+          <h4 style="font-weight:700; margin-top:4px;">${cert} Certification</h4>
+          <p style="font-size:0.7rem; color:var(--text-muted);">Authorized on ${new Date().toISOString().substring(0, 10)}</p>
+          <button class="btn-outline" style="align-self:flex-start; margin-top:var(--space-1); padding:2px 8px; font-size:0.7rem; height:28px;" onclick="downloadCertMock('${cert}')"><i class="fa-solid fa-download"></i> Download PDF</button>
+        `;
+        container.appendChild(card);
+      });
+    }
   }
 
-  userCerts.forEach(cert => {
-    const card = document.createElement('div');
-    card.className = 'glass-card card-premium';
-    card.style.borderLeftColor = 'var(--color-success)';
-    card.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="badge-tag" style="background:rgba(16,185,129,0.15); border-color:var(--color-success); color:var(--color-success);">COMPLETED</span>
-        <i class="fa-solid fa-certificate" style="color:var(--color-warning); font-size:1.4rem;"></i>
-      </div>
-      <h3>${cert} Certification</h3>
-      <p style="font-size:0.75rem; color:var(--text-muted);">Authorized by HackSkill Enterprise Ops on ${new Date().toISOString().substring(0, 10)}</p>
-      <button class="btn-outline" style="align-self:flex-start; margin-top:var(--space-2); padding:4px var(--space-2); font-size:0.75rem;" onclick="downloadCertMock('${cert}')"><i class="fa-solid fa-download"></i> Download PDF</button>
-    `;
-    container.appendChild(card);
-  });
+  if (overviewGrid) {
+    overviewGrid.innerHTML = '';
+    if (userCerts.length === 0) {
+      overviewGrid.innerHTML = `<div style="grid-column: 1 / -1; font-size:0.75rem; color:var(--text-muted); padding:var(--space-1);">No certificates earned yet. Complete courses to verify learning milestones.</div>`;
+    } else {
+      userCerts.forEach(cert => {
+        const item = document.createElement('div');
+        item.style.cssText = 'background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-1); border-radius:6px; display:flex; justify-content:space-between; align-items:center;';
+        item.innerHTML = `
+          <div>
+            <div style="font-size:0.75rem; font-weight:700;">${cert} Certificate</div>
+            <div style="font-size:0.6rem; color:var(--text-muted);">HackSkill authorized credentials</div>
+          </div>
+          <i class="fa-solid fa-certificate" style="color:var(--color-warning); font-size:1rem;"></i>
+        `;
+        overviewGrid.appendChild(item);
+      });
+    }
+  }
 }
 
 window.downloadCertMock = function(name) {

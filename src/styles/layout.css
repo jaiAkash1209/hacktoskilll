@@ -1,8 +1,9 @@
-/* HackSkill Desktop Application Layout - Strict Production Architecture */
+/* HackSkill Enterprise Three-Pane Layout - ChatGPT/Cursor Philosophy */
 
 :root {
   --navbar-height: 64px;
   --sidebar-width: 260px;
+  --right-panel-width: 320px;
   --max-content-width: 1280px;
 }
 
@@ -12,14 +13,14 @@ body {
   color: var(--text-primary);
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 16px; /* Strict body size 16px */
   line-height: 1.5;
   height: 100vh;
-  overflow: hidden; /* Prevent body scroll; only content area scrolls */
+  overflow: hidden; /* Desktop app layout: only panes scroll */
   transition: var(--transition-fast);
 }
 
-/* Base App shell */
+/* Base shell */
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -28,7 +29,7 @@ body {
   overflow: hidden;
 }
 
-/* Sticky top navigation (Strict height: 64px) */
+/* Global Top Navigation Bar (Height: 64px) */
 .workspace-header {
   height: var(--navbar-height);
   border-bottom: 1px solid var(--border-color);
@@ -36,12 +37,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-2);
   box-sizing: border-box;
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-/* Sidebar and Content Container split */
+/* Main Split Viewport */
 .app-body {
   display: flex;
   flex: 1;
@@ -50,7 +54,7 @@ body {
   overflow: hidden;
 }
 
-/* Left Sidebar (Strict width: 260px, sticky/fixed) */
+/* Left Sidebar Panel (260px width, sticky) */
 .sidebar-panel {
   width: var(--sidebar-width);
   height: 100%;
@@ -62,7 +66,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
   flex-shrink: 0;
-  overflow-y: auto;
 }
 
 .sidebar-menu {
@@ -79,7 +82,7 @@ body {
   color: var(--text-muted);
   text-decoration: none;
   border-radius: var(--border-radius-sm);
-  font-size: 14px; /* Strict rule 9: 14px navigation text */
+  font-size: 14px; /* Strict rule: 14px navigation text */
   font-weight: 500;
   cursor: pointer;
   box-sizing: border-box;
@@ -106,7 +109,7 @@ body {
   gap: var(--space-1);
 }
 
-/* Scrollable main content panel (max-width: 1280px container) */
+/* Scrollable Main Workspace Content area (Fluid, max-width: 1280px) */
 .workspace-panel {
   flex: 1;
   height: 100%;
@@ -116,22 +119,37 @@ body {
 }
 
 .workspace-container {
-  max-width: var(--max-content-width); /* Strict rule 4: max content width 1280px */
+  max-width: var(--max-content-width); /* Max width 1280px */
   margin: 0 auto;
-  padding: var(--space-3); /* Strict rule 6: max vertical padding 64px */
+  padding: var(--space-3); /* Section spacing 32-48px */
   box-sizing: border-box;
 }
 
 .workspace-content {
   display: none;
-  animation: fastFadeIn 0.15s ease-out forwards;
+  animation: fastFadeIn 0.1s ease-out forwards;
 }
 
 .workspace-content.active {
   display: block;
 }
 
-/* 12-Column Grid System (Strict rule 5: Use 12-column grid everywhere) */
+/* Right Utility Panel (320px width, persistent side utilities) */
+.right-utility-panel {
+  width: var(--right-panel-width);
+  height: 100%;
+  background-color: var(--bg-sidebar);
+  border-left: 1px solid var(--border-color);
+  padding: var(--space-2);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+/* 12-Column Grid system */
 .grid-12 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -140,7 +158,6 @@ body {
 }
 
 .col-12 { grid-column: span 12; }
-.col-10 { grid-column: span 10; }
 .col-9 { grid-column: span 9; }
 .col-8 { grid-column: span 8; }
 .col-6 { grid-column: span 6; }
@@ -148,25 +165,31 @@ body {
 .col-3 { grid-column: span 3; }
 .col-2 { grid-column: span 2; }
 
+@media (max-width: 1200px) {
+  .right-utility-panel {
+    display: none; /* Hide right utilities on narrow displays */
+  }
+}
+
 @media (max-width: 992px) {
   .app-body {
     flex-direction: column;
   }
   .sidebar-panel {
-    display: none; /* Hide sidebar on small screens or display toggle */
+    display: none;
   }
   .grid-12 {
     grid-template-columns: 1fr;
   }
-  .col-12, .col-10, .col-9, .col-8, .col-6, .col-4, .col-3, .col-2 {
+  .col-12, .col-9, .col-8, .col-6, .col-4, .col-3, .col-2 {
     grid-column: span 12;
   }
 }
 
-/* Typography Scales (Strict rule 1: Never use hero text larger than 40px) */
+/* Typography Constraints */
 h1 {
   font-family: var(--font-display);
-  font-size: 32px; /* Strict cap 40px */
+  font-size: 28px; /* Strict heading size: max 36px */
   font-weight: 700;
   margin: 0 0 var(--space-1) 0;
   line-height: 1.2;
@@ -175,7 +198,7 @@ h1 {
 
 h2 {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   margin: 0 0 var(--space-1) 0;
   color: var(--text-primary);
@@ -199,6 +222,6 @@ h4 {
 
 p {
   margin: 0 0 var(--space-1) 0;
-  font-size: 16px; /* Strict rule 8: 16px body text */
+  font-size: 16px; /* Strict body text 16px */
   color: var(--text-muted);
 }

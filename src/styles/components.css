@@ -1,6 +1,6 @@
-/* HackSkill SaaS Clean Components - Flat Gray Aesthetic */
+/* HackSkill Production Components - Strictly Bounded Spacings */
 
-/* Compact Bounded Cards (Strict rule 7: max card border radius 12px) */
+/* Flat Cards (Strict constraint: card radius 10px, no glassmorphism, no gradients, no float) */
 .glass-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -11,7 +11,6 @@
   gap: var(--space-1);
   box-sizing: border-box;
   transition: var(--transition-fast);
-  /* Rule 13: Cards contain useful information, not decoration. No floating. */
   transform: none !important;
   box-shadow: var(--shadow-sm) !important;
 }
@@ -24,9 +23,9 @@
   border-top: 2px solid var(--color-primary);
 }
 
-/* Strict button heights (Strict rule 10: Buttons must be 38-44px high) */
+/* Strict button heights (Strict constraint: Buttons must be 40px high) */
 .btn-primary {
-  height: 40px; /* Bounded 38-44px */
+  height: 40px; /* Bounded 40px */
   background-color: var(--color-primary);
   border: 1px solid var(--color-primary);
   color: var(--text-inverse);
@@ -49,7 +48,7 @@
 }
 
 .btn-outline {
-  height: 40px; /* Bounded 38-44px */
+  height: 40px; /* Bounded 40px */
   background-color: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-primary);
@@ -102,7 +101,7 @@
   gap: var(--space-1);
 }
 
-/* Editor Workspace Styles */
+/* Monaco Code Playground Editor components */
 .editor-shell {
   background-color: #1c1c21;
   border: 1px solid var(--border-color);
@@ -313,7 +312,7 @@
 .rank-2 { background-color: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid var(--border-color); }
 .rank-3 { background-color: rgba(205, 127, 50, 0.15); color: #c084fc; border: 1px solid #c084fc; }
 
-/* Dashboard Widgets details */
+/* Progress bars */
 .progress-bar-container {
   background-color: var(--bg-sidebar);
   border: 1px solid var(--border-color);
