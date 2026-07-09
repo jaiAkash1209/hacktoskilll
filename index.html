@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HackSkill Console - Developer Workspace Platform</title>
+  <title>HackSkill Console Workspace - Developer SaaS Platform</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,49 +21,55 @@
 </head>
 <body>
 
-  <!-- Unified Application Shell -->
+  <!-- App Shell Frame -->
   <div class="app-shell" id="app-shell">
     
-    <!-- Top Navigation Bar (Height: 64px) -->
+    <!-- Top Navigation Bar (Strict height 64px, matching wireframe top row) -->
     <header class="workspace-header">
+      
+      <!-- Left: Logo -->
       <div style="display:flex; align-items:center; gap:var(--space-2);">
-        <a href="/" class="logo-brand">
+        <a href="/" class="logo-brand" id="logo-action">
           <i class="fa-solid fa-square-terminal"></i>
           <span>HackSkill</span>
         </a>
-        <span class="badge-tag" style="font-size:0.65rem;">Console Workspace</span>
-        
-        <!-- Global Search Bar in Center -->
-        <div class="search-shortcut" onclick="CommandPalette.open()" style="cursor:pointer; background:var(--bg-card); border:1px solid var(--border-color); border-radius:4px; padding:4px 12px; font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:6px; margin-left:var(--space-2);">
-          <i class="fa-solid fa-magnifying-glass" style="font-size:0.7rem;"></i>
-          <span>Search dashboard commands...</span>
-          <kbd style="font-family:monospace; font-size:0.65rem; background:var(--bg-elevated); padding:1px 4px; border-radius:2px;">Ctrl+K</kbd>
+      </div>
+
+      <!-- Center: Search -->
+      <div style="flex:1; max-width:600px; padding:0 var(--space-3);">
+        <div style="position:relative; width:100%;">
+          <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:12px; color:var(--text-muted); font-size:0.8rem;"></i>
+          <input type="text" id="navbar-search-input" class="form-input" style="width:100%; padding-left:36px;" placeholder="Search files, roadmaps, compiler settings..." onclick="CommandPalette.open()">
         </div>
       </div>
-      
-      <div style="display:flex; align-items:center; gap:var(--space-2);">
-        <!-- Streak Flame Widget -->
-        <div class="streak-widget" id="header-streak-widget" style="display: none;">
-          <span class="streak-flame">🔥</span>
-          <span style="font-size:0.75rem; font-weight:700;" id="user-streak-txt">5 Days</span>
-        </div>
 
-        <!-- Theme Toggler -->
-        <button class="btn-outline" onclick="toggleTheme()" style="width:36px; height:36px; padding:0; justify-content:center;">
-          <i class="fa-solid fa-circle-half-stroke" id="theme-icon" style="font-size:0.8rem;"></i>
+      <!-- Right: + Create | 🔔 | Profile -->
+      <div style="display:flex; align-items:center; gap:var(--space-2);">
+        <!-- + Create Button -->
+        <button class="btn-primary" id="btn-create-action" onclick="switchDashboardTab('playground')" style="height:36px; font-size:0.75rem;">
+          <i class="fa-solid fa-plus"></i> Create
         </button>
 
-        <!-- User Authentication -->
-        <div id="auth-badge-wrapper" style="display:flex; align-items:center; gap:var(--space-1);">
-          <button class="btn-primary" id="btn-header-login" onclick="triggerLoginFlow()">Sign In</button>
+        <!-- 🔔 Notification Trigger -->
+        <button class="btn-outline" id="btn-notification-trigger" onclick="triggerNotificationToast()" style="width:36px; height:36px; padding:0; justify-content:center;">
+          <i class="fa-solid fa-bell" style="font-size:0.8rem;"></i>
+        </button>
+
+        <!-- Profile badge -->
+        <div id="auth-badge-wrapper" style="display:flex; align-items:center; gap:6px; cursor:pointer;" onclick="triggerLoginFlow()">
+          <div style="width:28px; height:28px; border-radius:50%; background:var(--color-primary); color:var(--text-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;" id="user-avatar">
+            G
+          </div>
+          <span id="user-profile-name" style="font-size:0.75rem; font-weight:600;">Guest Developer</span>
         </div>
       </div>
+
     </header>
 
-    <!-- Three-Pane Application split body -->
+    <!-- Bottom Body Structure split into Left sidebar, Middle main area, and Right utility panels -->
     <div class="app-body">
       
-      <!-- Panel 1: Left Navigation Sidebar (260px) -->
+      <!-- Panel 1: Left Sidebar (260px width) -->
       <aside class="sidebar-panel">
         <nav class="sidebar-menu">
           <div class="menu-item active" id="menu-overview" onclick="switchDashboardTab('overview')">
@@ -75,39 +81,48 @@
           <div class="menu-item" id="menu-playground" onclick="switchDashboardTab('playground')">
             <i class="fa-solid fa-laptop-code"></i> Playground
           </div>
-          <div class="menu-item" id="menu-mentor" onclick="switchDashboardTab('mentor')">
-            <i class="fa-solid fa-robot"></i> AI Mentor
-          </div>
           <div class="menu-item" id="menu-career" onclick="switchDashboardTab('career')">
             <i class="fa-solid fa-id-card-clip"></i> Challenges
           </div>
           <div class="menu-item" id="menu-certificates" onclick="switchDashboardTab('certificates')">
             <i class="fa-solid fa-award"></i> Certificates
           </div>
+          <div class="menu-item" id="menu-community" onclick="switchDashboardTab('community')">
+            <i class="fa-solid fa-users"></i> Community
+          </div>
           <div class="menu-item" id="menu-leaderboard" onclick="switchDashboardTab('leaderboard')">
             <i class="fa-solid fa-list-ol"></i> Leaderboard
+          </div>
+          <div class="menu-item" id="menu-settings" onclick="switchDashboardTab('settings')">
+            <i class="fa-solid fa-gear"></i> Settings
           </div>
         </nav>
 
         <div class="sidebar-footer">
-          <a href="admin.html" target="_blank" class="menu-item" style="padding:6px var(--space-1);"><i class="fa-solid fa-shield-halved"></i> Admin Panel</a>
-          <button class="btn-outline" id="btn-sidebar-logout" onclick="triggerLogout()" style="display:none; padding:6px 12px; font-size:0.75rem;"><i class="fa-solid fa-power-off"></i> Exit session</button>
+          <a href="admin.html" target="_blank" class="menu-item" style="padding:4px var(--space-1);"><i class="fa-solid fa-shield-halved"></i> Admin Console</a>
+          <button class="btn-outline" id="btn-sidebar-logout" onclick="triggerLogout()" style="display:none; padding:4px 8px; font-size:0.75rem; width:100%;"><i class="fa-solid fa-power-off"></i> Exit session</button>
         </div>
       </aside>
 
-      <!-- Panel 2: Scrollable Middle Content Workspace Area (Max width: 1280px) -->
+      <!-- Panel 2: Scrollable Middle Content Workspace Panel -->
       <main class="workspace-panel">
         <div class="workspace-container">
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: OVERVIEW (SaaS Dashboard console) -->
+          <!-- VIEW: DASHBOARD (Overview) -->
           <!-- ============================================== -->
           <section class="workspace-content active" id="view-overview">
             <div class="grid-12">
               
-              <!-- Metrics Cards row (4 columns, span 3 each) -->
+              <!-- Welcome back Heading -->
+              <div class="col-12">
+                <h1 id="dashboard-welcome-heading">Welcome back, Guest Developer</h1>
+                <p style="font-size:0.85rem; color:var(--text-muted);">Manage your learning metrics and execute compilers from a single dashboard workspace console.</p>
+              </div>
+
+              <!-- Stats Cards (4) (col-3 each) -->
               <div class="col-3 glass-card">
-                <div style="color:var(--text-muted); font-size:0.7rem; font-weight:700; text-transform:uppercase;">Learning Progress</div>
+                <div style="color:var(--text-muted); font-size:0.7rem; font-weight:700; text-transform:uppercase;">Experience (XP)</div>
                 <div style="font-size:1.4rem; font-weight:800; font-family:var(--font-display);" id="user-xp">2450 <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">XP</span></div>
                 <div class="progress-bar-container" style="height:4px; margin-top:6px;">
                   <div class="progress-bar-fill eco-color" id="user-level-bar" style="width: 45%;"></div>
@@ -121,8 +136,8 @@
               </div>
 
               <div class="col-3 glass-card">
-                <div style="color:var(--text-muted); font-size:0.7rem; font-weight:700; text-transform:uppercase;">Course Completion Ratio</div>
-                <div style="font-size:1.4rem; font-weight:800; font-family:var(--font-display);">2 / 3 <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Completed</span></div>
+                <div style="color:var(--text-muted); font-size:0.7rem; font-weight:700; text-transform:uppercase;">Courses Completed</div>
+                <div style="font-size:1.4rem; font-weight:800; font-family:var(--font-display);">2 / 3 <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted);">Done</span></div>
                 <div style="font-size:0.65rem; color:var(--text-muted);">Async JS, Express JS Server</div>
               </div>
 
@@ -132,84 +147,77 @@
                 <div style="font-size:0.65rem; color:var(--text-muted);">Consecutive logging days</div>
               </div>
 
-              <!-- Content segments -->
-              <div class="col-12" style="display:flex; flex-direction:column; gap:var(--space-2);">
-                
-                <!-- Continue Learning & Recent Courses -->
-                <div class="glass-card">
-                  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">
-                    <h4 style="font-weight:700;">Continue Learning & syllabus</h4>
-                    <button class="btn-outline" style="height:28px; padding:0 8px; font-size:0.7rem;" onclick="switchDashboardTab('courses')">View Library</button>
+              <!-- Continue Learning (col-12) -->
+              <div class="col-12 glass-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">
+                  <h4 style="font-weight:700;">Continue Learning</h4>
+                  <button class="btn-outline" style="height:28px; padding:0 8px; font-size:0.7rem;" onclick="switchDashboardTab('courses')">View Syllabus</button>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px;">
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:700;">Relational Databases</div>
+                    <div style="font-size:0.65rem; color:var(--text-muted);">Active module: Schema Normalizations and SQL queries</div>
                   </div>
-                  <div style="display:flex; flex-direction:column; gap:4px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px;">
-                      <div>
-                        <div style="font-size:0.8rem; font-weight:700;">Async JavaScript</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted);">Status: Completed • Received +300 XP</div>
-                      </div>
-                      <span class="badge-tag" style="border-color:var(--color-success); color:var(--color-success); background:transparent;">100%</span>
-                    </div>
+                  <button class="btn-primary" style="height:32px; padding:0 var(--space-2); font-size:0.7rem;" onclick="switchDashboardTab('courses')">Continue Course</button>
+                </div>
+              </div>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px;">
-                      <div>
-                        <div style="font-size:0.8rem; font-weight:700;">Express Web Servers</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted);">Status: Completed • Received +500 XP</div>
-                      </div>
-                      <span class="badge-tag" style="border-color:var(--color-success); color:var(--color-success); background:transparent;">100%</span>
+              <!-- Recent Courses (col-12) -->
+              <div class="col-12 glass-card">
+                <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">Recent Courses</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-1);">
+                  <div style="background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                      <div style="font-size:0.8rem; font-weight:700;">Async JavaScript</div>
+                      <div style="font-size:0.65rem; color:var(--text-muted);">Status: Completed • Received +300 XP</div>
                     </div>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px;">
-                      <div>
-                        <div style="font-size:0.8rem; font-weight:700;">Relational Databases</div>
-                        <div style="font-size:0.65rem; color:var(--text-muted);">Status: In Progress • Remaining: SQL Indexing</div>
-                      </div>
-                      <button class="btn-primary" style="height:30px; padding:0 10px; font-size:0.7rem;" onclick="switchDashboardTab('courses')">Continue Course</button>
+                    <span class="badge-tag" style="border-color:var(--color-success); color:var(--color-success); background:transparent;">100%</span>
+                  </div>
+                  <div style="background:var(--bg-app); border:1px solid var(--border-color); padding:8px var(--space-2); border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                      <div style="font-size:0.8rem; font-weight:700;">Express Web Servers</div>
+                      <div style="font-size:0.65rem; color:var(--text-muted);">Status: Completed • Received +500 XP</div>
                     </div>
+                    <span class="badge-tag" style="border-color:var(--color-success); color:var(--color-success); background:transparent;">100%</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- Daily Goal Checklist -->
-                <div class="glass-card">
-                  <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">Daily Goal Checklist</h4>
-                  <div class="eco-actions-checklist">
-                    <div class="eco-check-item completed" style="padding:4px 8px; font-size:0.75rem;">
-                      <i class="fa-solid fa-circle-check"></i>
-                      <span>Execute Javascript script in compiler sandbox (+20 XP)</span>
-                    </div>
-                    <div class="eco-check-item" id="target-review" onclick="claimDailyTarget('review')" style="padding:4px 8px; font-size:0.75rem;">
-                      <i class="fa-regular fa-circle" id="target-review-icon"></i>
-                      <span>Audit code reviews in diagnostics panel (+50 XP)</span>
-                    </div>
-                    <div class="eco-check-item" id="target-mentor" onclick="claimDailyTarget('mentor')" style="padding:4px 8px; font-size:0.75rem;">
-                      <i class="fa-regular fa-circle" id="target-mentor-icon"></i>
-                      <span>Chat query with Copa AI Mentor assistant (+30 XP)</span>
-                    </div>
+              <!-- Coding Challenges (col-12) -->
+              <div class="col-12 glass-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">
+                  <h4 style="font-weight:700;">Coding Challenges</h4>
+                  <button class="btn-outline" style="height:28px; padding:0 8px; font-size:0.7rem;" onclick="switchDashboardTab('playground')">Open Sandbox</button>
+                </div>
+                <div class="eco-actions-checklist">
+                  <div class="eco-check-item completed" style="padding:4px 8px; font-size:0.75rem;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Execute JavaScript script in compiler sandbox (+20 XP)</span>
+                  </div>
+                  <div class="eco-check-item" id="target-review" onclick="claimDailyTarget('review')" style="padding:4px 8px; font-size:0.75rem;">
+                    <i class="fa-regular fa-circle" id="target-review-icon"></i>
+                    <span>Audit code reviews in diagnostics panel (+50 XP)</span>
+                  </div>
+                  <div class="eco-check-item" id="target-mentor" onclick="claimDailyTarget('mentor')" style="padding:4px 8px; font-size:0.75rem;">
+                    <i class="fa-regular fa-circle" id="target-mentor-icon"></i>
+                    <span>Chat query with Copa AI Mentor assistant (+30 XP)</span>
                   </div>
                 </div>
+              </div>
 
-                <!-- Weekly Activity Graph -->
-                <div class="glass-card">
-                  <h4 style="font-weight:700; margin-bottom:6px;">Weekly Sandbox Commits Telemetry</h4>
-                  <div class="telemetry-chart-container" style="height:120px;">
-                    <canvas id="student-commits-chart"></canvas>
-                  </div>
+              <!-- Progress Charts (col-12) -->
+              <div class="col-12 glass-card">
+                <h4 style="font-weight:700; margin-bottom:6px;">Progress Charts</h4>
+                <div class="telemetry-chart-container" style="height:140px;">
+                  <canvas id="student-commits-chart"></canvas>
                 </div>
-
-                <!-- Recent Certificates -->
-                <div class="glass-card">
-                  <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">Recent Certificates & Credentials</h4>
-                  <div id="overview-certs-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-1);">
-                    <!-- dynamic certs list -->
-                  </div>
-                </div>
-
               </div>
 
             </div>
           </section>
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: COURSES LIBRARY -->
+          <!-- VIEW: COURSES LIBRARY -->
           <!-- ============================================== -->
           <section class="workspace-content" id="view-courses">
             <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-2); max-width:100%;">
@@ -242,7 +250,7 @@
           </section>
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: PLAYGROUND IDE -->
+          <!-- VIEW: PLAYGROUND IDE -->
           <!-- ============================================== -->
           <section class="workspace-content" id="view-playground">
             <div class="grid-12" style="height:calc(100vh - 120px);">
@@ -301,70 +309,7 @@ console.log(calculateFactorial(5));</textarea>
           </section>
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: AI MENTOR -->
-          <!-- ============================================== -->
-          <section class="workspace-content" id="view-mentor">
-            <div class="grid-12" style="height:calc(100vh - 120px);">
-              
-              <!-- Chat logs box -->
-              <div class="col-9 glass-card" style="height:100%; display:flex; flex-direction:column; padding:0; overflow:hidden;">
-                <div class="card-header" style="padding:8px var(--space-2); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-                  <div class="header-title" style="display:flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-robot" style="font-size:1rem; color:var(--color-primary);"></i>
-                    <h4 style="font-weight:700; margin:0;">AI Learning Mentor Chat</h4>
-                  </div>
-                  <div class="language-selector">
-                    <select id="mentor-lang-select" onchange="changeMentorLanguage()">
-                      <option value="en">🇺🇸 EN</option>
-                      <option value="es">🇲🇽 ES</option>
-                      <option value="fr">🇨🇦 FR</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="chat-messages" id="mentor-chat-messages" style="flex:1; overflow-y:auto; padding:var(--space-2); font-size:0.8rem;">
-                  <div class="message system-msg">
-                    <p>AI Mentor online. Request roadmaps, syntax help, or guides.</p>
-                  </div>
-                  <div class="message ai-msg">
-                    <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
-                    <div class="msg-content">
-                      <p id="mentor-welcome-txt">Hello! I am Copa, your AI learning assistant. How can I help you in your development journey today?</p>
-                      <button class="audio-speak-btn" onclick="speakMentorWelcome()"><i class="fa-solid fa-volume-high"></i> Listen to Copa</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Speech visual waveform -->
-                <div class="audio-waveform-box" id="mentor-audio-waveform" style="display:none; height:24px; padding:0 var(--space-2); border-top:1px solid var(--border-color);">
-                  <span class="wave-bar" style="height:8px;"></span>
-                  <span class="wave-bar" style="height:12px;"></span>
-                  <span class="wave-bar" style="height:6px;"></span>
-                  <span class="wave-text" style="font-size:0.7rem;">Copa Speaking...</span>
-                  <button class="wave-stop-btn" onclick="stopSpeechEngine()"><i class="fa-solid fa-square"></i></button>
-                </div>
-
-                <div class="chat-input-bar" style="padding:var(--space-1) var(--space-2); border-top:1px solid var(--border-color); background:rgba(0,0,0,0.1)">
-                  <input type="text" id="mentor-chat-input" placeholder="Ask about Closures, Async Promises, Event Loops..." onkeypress="handleMentorChatKey(event)">
-                  <button class="send-btn" style="width:32px; height:32px;" onclick="sendMentorChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-              </div>
-
-              <!-- Quick shortcuts sidebar -->
-              <div class="col-3 glass-card" style="height:100%;">
-                <h4 style="font-weight:700;">Prompts</h4>
-                <div class="chat-suggestions" style="background:transparent; border:none; padding:var(--space-1) 0; flex-direction:column; gap:4px; align-items:stretch;">
-                  <span class="suggestion-tag" style="font-size:0.75rem; border-radius:4px;" onclick="sendSuggestedMentorQuery('Generate study roadmap')">🗺️ JavaScript Roadmap</span>
-                  <span class="suggestion-tag" style="font-size:0.75rem; border-radius:4px;" onclick="sendSuggestedMentorQuery('Explain closures in Javascript')">🔒 Explain Closures</span>
-                  <span class="suggestion-tag" style="font-size:0.75rem; border-radius:4px;" onclick="sendSuggestedMentorQuery('Explain event loops')">🔄 Event Loops</span>
-                </div>
-              </div>
-
-            </div>
-          </section>
-
-          <!-- ============================================== -->
-          <!-- TAB VIEW: CHALLENGES (formerly career) -->
+          <!-- VIEW: CHALLENGES -->
           <!-- ============================================== -->
           <section class="workspace-content" id="view-career">
             <div class="grid-12" style="height:calc(100vh - 120px);">
@@ -376,6 +321,7 @@ console.log(calculateFactorial(5));</textarea>
                 <button class="btn-primary" onclick="auditDeveloperResume()" style="align-self:flex-end; margin-top:var(--space-2)"><i class="fa-solid fa-magnifying-glass"></i> Audit Scripts</button>
               </div>
 
+              <!-- Career dashboard feedbacks -->
               <div class="col-4 glass-card" style="height:100%; overflow-y:auto;">
                 <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:var(--space-1);"><i class="fa-solid fa-briefcase" style="color:var(--color-info);"></i> Feedback Console</h4>
                 
@@ -401,7 +347,7 @@ console.log(calculateFactorial(5));</textarea>
           </section>
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: CERTIFICATES -->
+          <!-- VIEW: CERTIFICATES -->
           <!-- ============================================== -->
           <section class="workspace-content" id="view-certificates">
             <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-2);">
@@ -414,7 +360,29 @@ console.log(calculateFactorial(5));</textarea>
           </section>
 
           <!-- ============================================== -->
-          <!-- TAB VIEW: LEADERBOARD -->
+          <!-- VIEW: COMMUNITY -->
+          <!-- ============================================== -->
+          <section class="workspace-content" id="view-community">
+            <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-2);">
+              <h3>Community Developer Forum Feed</h3>
+              <p>Discuss, coordinate, and review code with peers.</p>
+            </div>
+            
+            <div class="glass-card" style="padding:var(--space-2); min-height:300px;">
+              <div style="border-bottom:1px solid var(--border-color); padding-bottom:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="font-weight:700;">Peers Thread #general</h4>
+                <button class="btn-primary" style="height:32px; font-size:0.7rem;" onclick="showToastNotification('Peers chat synced.', 'success')"><i class="fa-solid fa-arrows-rotate"></i> Sync Feed</button>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:0.8rem; display:flex; flex-direction:column; gap:8px;">
+                <div>💼 <strong>jaiAkash1209:</strong> Just deployed express static files host falling back to index.html successfully!</div>
+                <div>🛡️ <strong>Admin:</strong> Global state engine initialized. Evacuation drills available in spotlight palette menus.</div>
+                <div>🎓 <strong>Sarah:</strong> Claimed async javascript certificate badge. XP +300.</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================== -->
+          <!-- VIEW: LEADERBOARD -->
           <!-- ============================================== -->
           <section class="workspace-content" id="view-leaderboard">
             <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-2);">
@@ -438,17 +406,44 @@ console.log(calculateFactorial(5));</textarea>
             </div>
           </section>
 
+          <!-- ============================================== -->
+          <!-- VIEW: SETTINGS -->
+          <!-- ============================================== -->
+          <section class="workspace-content" id="view-settings">
+            <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-2);">
+              <h3>Workspace Developer Settings</h3>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:var(--space-2);">
+              <div class="glass-card">
+                <h4 style="font-weight:700;">Account Credentials</h4>
+                <div style="display:flex; flex-direction:column; gap:6px; margin-top:6px;">
+                  <label style="font-size:0.75rem; color:var(--text-muted);">Developer Username</label>
+                  <input type="text" class="form-input" style="max-width:300px;" value="jaiAkash1209" readonly>
+                </div>
+              </div>
+
+              <div class="glass-card">
+                <h4 style="font-weight:700;">System Configuration Preferences</h4>
+                <div style="margin-top:6px; display:flex; gap:var(--space-1);">
+                  <button class="btn-outline" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i> Switch Color Mode</button>
+                  <button class="btn-outline" onclick="store.dispatch({type: 'RESET_STATE'}); showToastNotification('Workspace state reset.', 'warning');"><i class="fa-solid fa-arrows-rotate"></i> Reset Store Telemetry</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </div>
       </main>
 
-      <!-- Panel 3: Right Utility Panel (320px, persistent sidebar utilities) -->
+      <!-- Panel 3: Right Utility Panel (320px, matching wireframe column 3) -->
       <aside class="right-utility-panel">
         
-        <!-- Persistent Side AI Mentor Chat Panel -->
+        <!-- row 1: AI Mentor chat widget -->
         <div class="glass-card" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
-          <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">Copa AI Mentor</h4>
+          <h4 style="font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:6px;">AI Mentor</h4>
           <div style="flex:1; overflow-y:auto; font-size:0.75rem; background:rgba(0,0,0,0.1); border:1px solid var(--border-color); padding:var(--space-1); border-radius:6px; font-family:var(--font-mono);" id="overview-mini-chat">
-            🤖 Copa: Welcome! Ask queries here or expand via left sidebar options.
+            🤖 Copa: Welcome! Audit code reviews in playground or prompt queries here.
           </div>
           <div style="display:flex; gap:4px; margin-top:4px;">
             <input type="text" id="overview-mini-input" class="form-input" style="flex:1; height:32px; font-size:0.75rem;" placeholder="Ask Copa..." onkeypress="handleMiniChatKey(event)">
@@ -456,9 +451,18 @@ console.log(calculateFactorial(5));</textarea>
           </div>
         </div>
 
-        <!-- Persistent Hackathons Calendar widget -->
+        <!-- row 2: Notifications -->
         <div class="glass-card">
-          <h4 style="font-weight:700; margin-bottom:4px;">Upcoming Hackathons</h4>
+          <h4 style="font-weight:700; margin-bottom:4px;">Notifications</h4>
+          <div style="font-size:0.75rem; color:var(--text-muted); display:flex; flex-direction:column; gap:4px;" id="side-notifications-list">
+            <div>🔔 <strong>XP Goal:</strong> Complete Async JS course (+300 XP)</div>
+            <div>🔔 <strong>Roadmap:</strong> 1 pending database milestone left.</div>
+          </div>
+        </div>
+
+        <!-- row 3: Deadlines -->
+        <div class="glass-card">
+          <h4 style="font-weight:700; margin-bottom:4px;">Deadlines</h4>
           <div style="display:flex; flex-direction:column; gap:6px; font-size:0.75rem;">
             <div style="border-left:2px solid var(--color-primary); padding-left:6px;">
               <strong>Weekly Algorithm Hack #12</strong>
@@ -471,10 +475,10 @@ console.log(calculateFactorial(5));</textarea>
           </div>
         </div>
 
-        <!-- Persistent Community Activity feed -->
+        <!-- row 4: Activity -->
         <div class="glass-card">
-          <h4 style="font-weight:700; margin-bottom:4px;">Community Activity</h4>
-          <div class="ops-logs-section" style="height:120px; background:transparent; padding:0;">
+          <h4 style="font-weight:700; margin-bottom:4px;">Activity</h4>
+          <div class="ops-logs-section" style="height:100px; background:transparent; padding:0;">
             <div class="logs-feed" id="student-activity-feed" style="font-family:var(--font-mono); font-size:0.7rem;">
               <div class="log-entry system">
                 <span class="log-time">10:14</span>
@@ -488,12 +492,12 @@ console.log(calculateFactorial(5));</textarea>
           </div>
         </div>
 
-        <!-- Persistent Recent Notifications -->
+        <!-- row 5: Community -->
         <div class="glass-card">
-          <h4 style="font-weight:700; margin-bottom:4px;">Recent Notifications</h4>
-          <div style="font-size:0.75rem; color:var(--text-muted); display:flex; flex-direction:column; gap:4px;">
-            <div>🔔 <strong>XP Reward:</strong> Complete Async JS course (+300 XP)</div>
-            <div>🔔 <strong>Roadmap:</strong> 1 pending milestone left.</div>
+          <h4 style="font-weight:700; margin-bottom:4px;">Community</h4>
+          <div style="font-size:0.7rem; font-family:var(--font-mono); display:flex; flex-direction:column; gap:2px;">
+            <div> Sarah completed Async JS (+300 XP)</div>
+            <div> John compiled sandbox.js (+20 XP)</div>
           </div>
         </div>
 

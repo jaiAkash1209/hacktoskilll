@@ -101,6 +101,10 @@ function updateWorkspaceUI(state) {
 
   const displayName = state.isLoggedIn ? state.user.name : 'Guest Developer';
 
+  // Dynamic welcome heading
+  const welcome = document.getElementById('dashboard-welcome-heading');
+  if (welcome) welcome.innerText = `Welcome back, ${displayName}`;
+
   // User Profile Metrics
   const nameLabel = document.getElementById('user-profile-name');
   if (nameLabel) nameLabel.innerText = displayName;
@@ -699,4 +703,9 @@ window.handleMiniChatKey = function(e) {
   if (e.key === 'Enter') {
     sendMiniChatMessage();
   }
+};
+
+// Global Notifications toast trigger
+window.triggerNotificationToast = function() {
+  showToastNotification('Console System: Weekly coding target resets in 3 days.', 'info');
 };
