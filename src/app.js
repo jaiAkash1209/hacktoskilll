@@ -94,21 +94,31 @@ function updateWorkspaceUI(state) {
   const activeMenu = document.getElementById(`menu-${state.activeTab}`);
   if (activeMenu) activeMenu.classList.add('active');
 
+  // Auth visibility controls
+  const btnLogin = document.getElementById('btn-header-login');
+  const btnLogout = document.getElementById('btn-sidebar-logout');
+  const streakWidget = document.getElementById('header-streak-widget');
+
+  const displayName = state.isLoggedIn ? state.user.name : 'Guest Developer';
+
   // User Profile Metrics
   const nameLabel = document.getElementById('user-profile-name');
-  if (nameLabel) nameLabel.innerText = state.user.name;
+  if (nameLabel) nameLabel.innerText = displayName;
 
   const avatar = document.getElementById('user-avatar');
-  if (avatar) avatar.innerText = state.user.name.charAt(0).toUpperCase();
+  if (avatar) avatar.innerText = displayName.charAt(0).toUpperCase();
 
   const xpVal = document.getElementById('user-xp');
-  if (xpVal) xpVal.innerHTML = `${state.user.xp} <span style="font-size:0.9rem; font-weight:600; color:var(--text-muted);">XP</span>`;
+  if (xpVal) xpVal.innerHTML = `${state.user.xp} <span style="font-size:0.8rem; font-weight:500; color:var(--text-muted);">XP</span>`;
 
   const lvVal = document.getElementById('user-level');
   if (lvVal) lvVal.innerText = `Lv. ${state.user.level}`;
 
   const streakVal = document.getElementById('user-streak-txt');
   if (streakVal) streakVal.innerText = `${state.user.streak} Days`;
+  
+  const streakMetric = document.getElementById('user-streak-metric');
+  if (streakMetric) streakMetric.innerText = `${state.user.streak} Days`;
 
   // XP progress bar width updates
   const bar = document.getElementById('user-level-bar');
@@ -116,6 +126,16 @@ function updateWorkspaceUI(state) {
     const relativeXp = state.user.xp % 1000;
     const pct = (relativeXp / 1000) * 100;
     bar.style.width = `${pct}%`;
+  }
+
+  if (state.isLoggedIn) {
+    if (btnLogin) btnLogin.style.display = 'none';
+    if (btnLogout) btnLogout.style.display = 'inline-flex';
+    if (streakWidget) streakWidget.style.display = 'flex';
+  } else {
+    if (btnLogin) btnLogin.style.display = 'inline-flex';
+    if (btnLogout) btnLogout.style.display = 'none';
+    if (streakWidget) streakWidget.style.display = 'none';
   }
 
   // Alert mode handles
@@ -146,10 +166,6 @@ function getPageTitle(tabId) {
 window.triggerLoginFlow = function() {
   const username = prompt("Enter your developer username to launch the SaaS client:") || "jaiAkash1209";
   store.dispatch(ACTIONS.LOGIN, username);
-  
-  // Toggle portal view
-  document.getElementById('landing-view').style.display = 'none';
-  document.getElementById('student-shell').style.display = 'grid';
 
   // Set charts sizes
   setTimeout(() => {
@@ -164,8 +180,6 @@ window.triggerLoginFlow = function() {
 
 window.triggerLogout = function() {
   store.dispatch(ACTIONS.LOGOUT);
-  document.getElementById('landing-view').style.display = 'flex';
-  document.getElementById('student-shell').style.display = 'none';
   showToastNotification('Developer dashboard logged-out successfully.', 'warning');
 };
 
@@ -606,3 +620,62 @@ function showToastNotification(msg, type = 'primary') {
   root.appendChild(toast);
   setTimeout(() => toast.remove(), 3500);
 }
+
+// Quick sandbox compiler runner
+window.runQuickSandbox = function() {
+  const code = document.getElementById('quick-code-area').value;
+  const consoleLog = document.getElementById('quick-console-logs');
+  consoleLog.innerHTML = '';
+
+  const logArray = [];
+  const nativeLog = console.log;
+  console.log = function(...args) {
+    logArray.push(args.join(' '));
+    nativeLog.apply(console, args);
+  };
+
+  try {
+    const sandboxFn = new Function(code);
+    sandboxFn();
+
+    console.log = nativeLog;
+    consoleLog.innerHTML = logArray.length > 0 
+      ? logArray.map(line => `&gt;_ ${line}`).join('<br>')
+      : `&gt;_ Script ran successfully. No outputs logged.`;
+    consoleLog.style.color = "var(--color-success)";
+    showToastNotification('Quick sandbox run completed.', 'success');
+  } catch (error) {
+    console.log = nativeLog;
+    consoleLog.innerHTML = `❌ Error: ${error.message}`;
+    consoleLog.style.color = "var(--color-danger)";
+  }
+};
+
+// Mini Chatbot logic on overview page
+window.sendMiniChatMessage = async function() {
+  const input = document.getElementById('overview-mini-input');
+  const queryText = input.value.trim();
+  if (!queryText) return;
+
+  const chatLog = document.getElementById('overview-mini-chat');
+  chatLog.innerHTML += `<br><strong>You:</strong> ${queryText}`;
+  input.value = '';
+
+  const response = await AIClient.getMentorResponse(queryText, 'en');
+  setTimeout(() => {
+    chatLog.innerHTML += `<br>🤖 <strong>Copa AI:</strong> ${response.text}`;
+    chatLog.scrollTop = chatLog.scrollHeight;
+    
+    // Auto check daily target review
+    const target = document.getElementById('target-mentor');
+    if (target && !target.classList.contains('completed')) {
+      claimDailyTarget('mentor');
+    }
+  }, 500);
+};
+
+window.handleMiniChatKey = function(e) {
+  if (e.key === 'Enter') {
+    sendMiniChatMessage();
+  }
+};

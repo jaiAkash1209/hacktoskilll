@@ -1,10 +1,10 @@
-/* HackSkill Flat SaaS Components - Notion/Vercel/GitHub Aesthetic Styling */
+/* HackSkill Production-Ready UI Components - Strict Constraints */
 
-/* Compact Flat Cards */
+/* Flat Cards (Strict rule 7: max card border radius 12px) */
 .glass-card {
-  background: var(--bg-card);
+  background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-card); /* 10px (under 12px) */
   box-shadow: var(--shadow-sm);
   padding: var(--space-2);
   display: flex;
@@ -12,31 +12,34 @@
   gap: var(--space-1);
   transition: var(--transition-fast);
   position: relative;
-  overflow: hidden;
+  /* Rule 13: Cards contain useful information, not decoration. No floating. */
+  transform: none !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .glass-card:hover {
   border-color: var(--text-muted);
-  box-shadow: var(--shadow-md);
 }
 
 .glass-card.card-premium {
   border-top: 2px solid var(--color-primary);
 }
 
-/* Compact Buttons */
+/* Strict button heights (Strict rule 10: Buttons must be 38-44px high) */
 .btn-primary {
+  height: 40px; /* Bounded 38-44px */
   background-color: var(--color-primary);
   border: 1px solid var(--color-primary);
   color: var(--text-inverse);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.8rem;
-  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  padding: 0 var(--space-2);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   transition: var(--transition-fast);
 }
@@ -46,17 +49,19 @@
 }
 
 .btn-outline {
+  height: 40px; /* Bounded 38-44px */
   background-color: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.8rem;
-  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  padding: 0 var(--space-2);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   transition: var(--transition-fast);
 }
@@ -66,14 +71,15 @@
   border-color: var(--text-muted);
 }
 
-/* Form Controls */
+/* Form inputs matching compact design */
 .form-input {
+  height: 40px;
   background-color: var(--bg-sidebar);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   border-radius: var(--border-radius-sm);
-  padding: 0.45rem var(--space-2);
-  font-size: 0.8rem;
+  padding: 0 var(--space-2);
+  font-size: 0.85rem;
   outline: none;
   font-family: var(--font-body);
   transition: var(--transition-fast);
@@ -83,9 +89,9 @@
   border-color: var(--border-focus);
 }
 
-/* Compact Streak Flame Widget */
+/* Streak widget */
 .streak-widget {
-  background: var(--bg-sidebar);
+  background-color: var(--bg-sidebar);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
   padding: 4px 10px;
@@ -94,13 +100,9 @@
   gap: var(--space-1);
 }
 
-.streak-flame {
-  font-size: 1.25rem;
-}
-
-/* Code Playground Editor Shell (VS Code style) */
+/* Monaco Code Playground Editor components */
 .editor-shell {
-  background: #18181c;
+  background-color: #1c1c21;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
   display: flex;
@@ -110,8 +112,8 @@
 }
 
 .editor-head {
-  height: 36px;
-  background: #111115;
+  height: 38px;
+  background-color: #141418;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -123,7 +125,7 @@
   flex: 1;
   background: transparent;
   border: none;
-  color: #a78bfa;
+  color: #38bdf8;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   padding: var(--space-2);
@@ -132,8 +134,8 @@
 }
 
 .editor-console {
-  height: 120px;
-  background: #0d0d10;
+  height: 100px;
+  background-color: #0c0c0e;
   border-top: 1px solid var(--border-color);
   padding: var(--space-2);
   font-family: var(--font-mono);
@@ -159,11 +161,11 @@
 
 .palette-box {
   width: 100%;
-  max-width: 540px;
+  max-width: 500px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
@@ -195,7 +197,7 @@
 }
 
 .palette-results {
-  max-height: 280px;
+  max-height: 240px;
   overflow-y: auto;
   padding: 4px;
   display: flex;
@@ -215,7 +217,7 @@
 }
 
 .palette-result-item:hover, .palette-result-item.selected {
-  background: var(--bg-hover);
+  background-color: var(--bg-hover);
   color: var(--text-primary);
 }
 
@@ -229,7 +231,7 @@
 
 .result-tag {
   font-size: 0.6rem;
-  background: var(--bg-app);
+  background-color: var(--bg-app);
   border: 1px solid var(--border-color);
   padding: 1px 4px;
   border-radius: 3px;
@@ -237,9 +239,9 @@
 
 /* Flat Accordion */
 .accordion-item {
-  background: var(--bg-card);
+  background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-card);
   overflow: hidden;
 }
 
@@ -277,11 +279,11 @@
 }
 
 .toast {
-  background: var(--bg-elevated);
+  background-color: var(--bg-elevated);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
   padding: var(--space-2);
-  min-width: 260px;
+  min-width: 250px;
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
@@ -305,9 +307,9 @@
   font-size: 0.7rem;
   font-weight: 600;
 }
-.rank-1 { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); border: 1px solid var(--color-warning); }
-.rank-2 { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid var(--border-color); }
-.rank-3 { background: rgba(205, 127, 50, 0.15); color: #c084fc; border: 1px solid #c084fc; }
+.rank-1 { background-color: rgba(245, 158, 11, 0.15); color: var(--color-warning); border: 1px solid var(--color-warning); }
+.rank-2 { background-color: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid var(--border-color); }
+.rank-3 { background-color: rgba(205, 127, 50, 0.15); color: #c084fc; border: 1px solid #c084fc; }
 
 /* Flat Telemetry Dashboards */
 .telemetry-grid {
@@ -317,6 +319,6 @@
 }
 
 .telemetry-chart-container {
-  height: 160px;
+  height: 140px;
   margin-top: var(--space-2);
 }

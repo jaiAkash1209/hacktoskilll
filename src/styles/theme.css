@@ -1,61 +1,65 @@
-/* HackSkill Developer-First SaaS Theme System */
+/* HackSkill Developer Dashboard Design tokens */
 
 :root {
-  /* Common Spacing & Spans (8px design grid) */
+  /* Font Families */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  /* Standard Spacing (8px grid system) */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
   --space-4: 32px;
   --space-6: 48px;
   --space-8: 64px;
+
+  /* Strict Constraints */
+  --navbar-height: 64px;
+  --sidebar-width: 260px;
+  --max-content-width: 1280px;
   
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  
-  --transition-fast: all 0.15s ease;
+  --transition-fast: all 0.1s ease;
   --border-radius-sm: 6px;
-  --border-radius-md: 10px;
+  --border-radius-card: 10px; /* Max border radius 12px constraint */
   
-  /* Restrained Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Restrained Dark Theme (GitHub / Vercel Dashboard style) */
+/* GitHub Dark style theme colors */
 .theme-dark {
-  --bg-app: #0a0a0c;
-  --bg-sidebar: #0f0f12;
-  --bg-card: #151518;
-  --bg-elevated: #1b1b1f;
-  --border-color: rgba(255, 255, 255, 0.06);
-  --border-focus: #38bdf8;
+  --bg-app: #0d1117;
+  --bg-sidebar: #161b22;
+  --bg-card: #21262d;
+  --bg-elevated: #30363d;
+  --border-color: #30363d;
+  --border-focus: #58a6ff;
   
-  --text-primary: #f4f4f5;
-  --text-muted: #8e8e93;
-  --text-inverse: #0e0e11;
+  --text-primary: #c9d1d9;
+  --text-muted: #8b949e;
+  --text-inverse: #0d1117;
   
-  --color-primary: #38bdf8;
-  --color-primary-glow: rgba(56, 189, 248, 0.12);
-  --color-secondary: #a78bfa;
-  --color-accent: #14b8a6;
+  --color-primary: #58a6ff;
+  --color-primary-glow: rgba(88, 166, 255, 0.1);
+  --color-secondary: #bc8cff;
+  --color-accent: #3fb950;
   
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #f43f5e;
-  --color-info: #3b82f6;
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-danger: #f85149;
+  --color-info: #58a6ff;
   
-  --bg-hover: rgba(255, 255, 255, 0.04);
+  --bg-hover: rgba(240, 246, 252, 0.08);
 }
 
-/* Restrained Light Theme (GitHub light / Linear light style) */
+/* GitHub Light style theme colors */
 .theme-light {
   --bg-app: #f6f8fa;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
-  --bg-elevated: #ffffff;
-  --border-color: rgba(0, 0, 0, 0.08);
+  --bg-elevated: #f6f8fa;
+  --border-color: #d0d7de;
   --border-focus: #0969da;
   
   --text-primary: #24292f;
@@ -65,23 +69,18 @@
   --color-primary: #0969da;
   --color-primary-glow: rgba(9, 105, 218, 0.08);
   --color-secondary: #8250df;
-  --color-accent: #059669;
+  --color-accent: #1a7f37;
   
   --color-success: #1a7f37;
   --color-warning: #9a6700;
   --color-danger: #cf222e;
   --color-info: #0969da;
   
-  --bg-hover: rgba(0, 0, 0, 0.03);
+  --bg-hover: rgba(0, 0, 0, 0.04);
 }
 
-/* Fast and micro scale animations for items */
+/* Simple fast animations */
 @keyframes fastFadeIn {
   from { opacity: 0; transform: translateY(2px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fastPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
 }
