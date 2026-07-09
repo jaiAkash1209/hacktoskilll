@@ -41,6 +41,16 @@ window.addEventListener('DOMContentLoaded', () => {
   // Load user details theme preference
   applyCurrentTheme();
 
+  // Read current URL path for clean client-side routing
+  const initialTab = getTabFromPath(window.location.pathname);
+  store.dispatch(ACTIONS.SWITCH_TAB, initialTab);
+
+  // Set up popstate event listener for browser Back/Forward navigation
+  window.addEventListener('popstate', (event) => {
+    const tabId = (event.state && event.state.tabId) ? event.state.tabId : getTabFromPath(window.location.pathname);
+    store.dispatch(ACTIONS.SWITCH_TAB, tabId);
+  });
+
   // Subscribe state store changes to drive UI view updates
   store.subscribe((state) => {
     updateWorkspaceUI(state);
@@ -72,6 +82,10 @@ function applyCurrentTheme() {
 
 // Student OS View router switcher
 window.switchDashboardTab = function(tabId) {
+  const path = getPathFromTab(tabId);
+  if (window.location.pathname !== path) {
+    window.history.pushState({ tabId }, '', path);
+  }
   store.dispatch(ACTIONS.SWITCH_TAB, tabId);
 };
 
@@ -712,3 +726,45 @@ window.handleMiniChatKey = function(e) {
 window.triggerNotificationToast = function() {
   showToastNotification('Console System: Weekly coding target resets in 3 days.', 'info');
 };
+
+// Routing Path Helpers
+function getTabFromPath(path) {
+  const cleanPath = path.toLowerCase().replace(/^\/|\/$/g, '');
+  switch (cleanPath) {
+    case '':
+    case 'overview':
+    case 'dashboard':
+      return 'overview';
+    case 'courses':
+      return 'courses';
+    case 'playground':
+      return 'playground';
+    case 'challenges':
+    case 'career':
+      return 'career';
+    case 'certificates':
+      return 'certificates';
+    case 'community':
+      return 'community';
+    case 'leaderboard':
+      return 'leaderboard';
+    case 'settings':
+      return 'settings';
+    default:
+      return 'overview';
+  }
+}
+
+function getPathFromTab(tabId) {
+  switch (tabId) {
+    case 'overview': return '/';
+    case 'courses': return '/courses';
+    case 'playground': return '/playground';
+    case 'career': return '/challenges';
+    case 'certificates': return '/certificates';
+    case 'community': return '/community';
+    case 'leaderboard': return '/leaderboard';
+    case 'settings': return '/settings';
+    default: return '/';
+  }
+}
