@@ -6,6 +6,11 @@ const PORT = process.env.PORT || 10000; // Render uses process.env.PORT, default
 // Serve static assets
 app.use(express.static(path.join(__dirname)));
 
+// Route clean path /admin directly to admin.html
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 // Route all other requests to index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

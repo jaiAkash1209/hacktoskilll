@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackSkill Admin Console - Enterprise Operations Command</title>
+  
+  <!-- Font links -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="src/styles/theme.css">
+  <link rel="stylesheet" href="src/styles/layout.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+</head>
+<body style="background:var(--bg-app); min-height:100vh;">
+
+  <!-- Background overlay blobs -->
+  <div class="noise-overlay"></div>
+  <div class="aurora-bg">
+    <div class="aurora-circle-1" style="background:radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%);"></div>
+    <div class="aurora-circle-2" style="background:radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);"></div>
+  </div>
+
+  <div class="app-shell" style="z-index:2; position:relative;">
+    
+    <!-- Top Header -->
+    <header class="workspace-header" style="height:75px; border-bottom:1px solid var(--border-color); background:rgba(10, 13, 30, 0.85); width:100%; position:sticky; top:0; z-index:100;">
+      <div style="display:flex; align-items:center; gap:var(--space-2)">
+        <div class="logo-brand">
+          <i class="fa-solid fa-users-gear" style="color:var(--color-danger);"></i>
+          <span style="background: linear-gradient(135deg, var(--color-danger), var(--color-warning)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">HackSkill Admin</span>
+        </div>
+        <span class="badge-tag" style="background:rgba(239, 68, 68, 0.15); border-color:var(--color-danger); color:var(--color-danger);">Enterprise Ops</span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:var(--space-2);">
+        <div class="system-status-pill green-pill" id="admin-system-indicator">
+          <span class="status-dot"></span> Server Operations Normal
+        </div>
+        <div style="font-size:0.75rem; color:var(--text-muted); font-family:monospace;" id="admin-clock">
+          2026-07-09 15:32:08
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main style="padding:var(--space-3) 5%; display:flex; flex-direction:column; gap:var(--space-3);">
+      
+      <!-- Metrics Dashboard Header Row -->
+      <div class="telemetry-grid">
+        <div class="glass-card card-premium" style="border-left-color: var(--color-primary)">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Monthly Recurring Revenue (MRR)</div>
+          <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);">$12,450 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">USD</span></div>
+          <div style="font-size:0.7rem; color:var(--color-success); font-weight:600;"><i class="fa-solid fa-caret-up"></i> +14.2% this month</div>
+        </div>
+
+        <div class="glass-card card-premium" style="border-left-color: var(--color-secondary)">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Active Users Database</div>
+          <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);">2,450 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">Students</span></div>
+          <div style="font-size:0.7rem; color:var(--color-success); font-weight:600;"><i class="fa-solid fa-caret-up"></i> 180 logged-in right now</div>
+        </div>
+
+        <div class="glass-card card-premium" style="border-left-color: var(--color-info)">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Syllabus Completions</div>
+          <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);">1,290 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">Certificates</span></div>
+          <div style="font-size:0.7rem; color:var(--text-muted); font-weight:500;">Course success rate: 82%</div>
+        </div>
+
+        <div class="glass-card card-premium" style="border-left-color: var(--color-danger)">
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Database Server Latency</div>
+          <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);" id="admin-db-latency">14 <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">ms</span></div>
+          <div style="font-size:0.7rem; color:var(--color-success); font-weight:600;"><i class="fa-solid fa-check"></i> System Healthy</div>
+        </div>
+      </div>
+
+      <!-- Main Layout Admin Grid -->
+      <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:var(--space-3);">
+        
+        <!-- Column 1: User Management Table & Logs -->
+        <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+          
+          <!-- User Directory -->
+          <div class="glass-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-1)">
+              <h3>User Directory Database</h3>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-outline" style="padding:4px var(--space-2); font-size:0.75rem;" onclick="exportAdminData('csv')"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                <button class="btn-outline" style="padding:4px var(--space-2); font-size:0.75rem;" onclick="exportAdminData('pdf')"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+              </div>
+            </div>
+            
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:left;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--border-color); background:rgba(0,0,0,0.1);">
+                    <th style="padding:10px;">User ID</th>
+                    <th style="padding:10px;">Name</th>
+                    <th style="padding:10px;">Role</th>
+                    <th style="padding:10px;">XP accrued</th>
+                    <th style="padding:10px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-user-table">
+                  <!-- Javascript fills this -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Live Audit logs -->
+          <div class="glass-card">
+            <h3>Enterprise System Audit Trail</h3>
+            <div class="ops-logs-section" style="height:160px; margin-top:var(--space-1); background:transparent; padding:0;">
+              <div class="logs-feed" id="admin-audit-logs">
+                <!-- Javascript dynamic logs -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 2: Charts, Feature Flags & Backups -->
+        <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+          
+          <!-- Revenue Metrics Chart -->
+          <div class="glass-card">
+            <h3>Monthly Recurring Revenue Growth</h3>
+            <p class="subtitle">SaaS projections metrics ($USD)</p>
+            <div class="telemetry-chart-container" style="position:relative; height:180px;">
+              <canvas id="admin-revenue-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Feature flags panel -->
+          <div class="glass-card">
+            <h3>Feature Toggles & System Flags</h3>
+            <p class="subtitle">Control SaaS variables and deployment states</p>
+            
+            <div style="display:flex; flex-direction:column; gap:var(--space-2); margin-top:var(--space-1)">
+              
+              <!-- Flag 1 -->
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px var(--space-2); background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:10px;">
+                <div>
+                  <div style="font-size:0.8rem; font-weight:700;">AI Code Assistant Module</div>
+                  <div style="font-size:0.65rem; color:var(--text-muted);">Enables Monaco reviews & bug scanner triggers</div>
+                </div>
+                <button class="btn-outline" id="toggle-flag-ai" onclick="toggleFeatureFlag('ai')" style="padding:4px 10px; font-size:0.7rem; color:var(--color-success);">Active</button>
+              </div>
+
+              <!-- Flag 2 -->
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px var(--space-2); background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:10px;">
+                <div>
+                  <div style="font-size:0.8rem; font-weight:700;">Local TTS Voice Synthesis</div>
+                  <div style="font-size:0.65rem; color:var(--text-muted);">Enables browser voice readouts on AI Mentor</div>
+                </div>
+                <button class="btn-outline" id="toggle-flag-tts" onclick="toggleFeatureFlag('tts')" style="padding:4px 10px; font-size:0.7rem; color:var(--color-success);">Active</button>
+              </div>
+
+              <!-- Backup -->
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px var(--space-2); background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:10px;">
+                <div>
+                  <div style="font-size:0.8rem; font-weight:700;">Database Configuration Backups</div>
+                  <div style="font-size:0.65rem; color:var(--text-muted);">Trigger snapshot backups file system sync</div>
+                </div>
+                <button class="btn-primary" onclick="backupDatabaseSnapshot()" style="padding:4px 10px; font-size:0.7rem;"><i class="fa-solid fa-cloud-arrow-up"></i> Backup</button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer" style="background:rgba(10,13,30,0.85); width:100%;">
+      <div>FIFA 26 Operations dashboard &copy; HackSkill Admin</div>
+      <div>Telemetry normal</div>
+    </footer>
+
+  </div>
+
+  <!-- Toast notification list container -->
+  <div class="toast-container" id="toast-root"></div>
+
+  <!-- Chart JS script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Admin scripts -->
+  <script type="module">
+    import { store } from './src/store/store.js';
+    import { ACTIONS } from './src/store/actions.js';
+
+    // Mock Users Database
+    const usersDb = [
+      { id: 'USR-8902', name: 'jaiAkash1209', role: 'Student', xp: 2450 },
+      { id: 'USR-4819', name: 'John Doe', role: 'Student', xp: 1280 },
+      { id: 'USR-2940', name: 'Sarah Smith', role: 'Instructor', xp: 4520 },
+      { id: 'USR-1102', name: 'System Admin', role: 'Admin', xp: 9800 }
+    ];
+
+    window.onload = function() {
+      // Clock ticks
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      // Fluctuate Database latency to look live
+      setInterval(fluctuateLatency, 4000);
+
+      // Render Users Table
+      renderUsersTable();
+
+      // Seed audit logs
+      addAuditLog('Admin interface loaded successfully.', 'system');
+      addAuditLog('Telemetry socket connected.', 'system');
+
+      // Bind store changes (like Evacuation alert trigger)
+      store.subscribe((state) => {
+        const indicator = document.getElementById('admin-system-indicator');
+        if (state.evacuationMode) {
+          indicator.className = "system-status-pill red-pill red-pill-critical";
+          indicator.innerHTML = '<span class="status-dot"></span> 🚨 EMERGENCY EVACUATION LIVE';
+          addAuditLog('🚨 ALERT: Stadium Evacuation Mode activated by Command Palette.', 'danger');
+        } else {
+          indicator.className = "system-status-pill green-pill";
+          indicator.innerHTML = '<span class="status-dot"></span> Server Operations Normal';
+        }
+      });
+
+      // Chart JS MRR revenue
+      renderRevenueChart();
+    };
+
+    function updateClock() {
+      const clock = document.getElementById('admin-clock');
+      const now = new Date();
+      clock.innerText = now.toISOString().replace('T', ' ').substring(0, 19);
+    }
+
+    function fluctuateLatency() {
+      const ms = Math.floor(Math.random() * 8) + 10; // 10-18 ms
+      document.getElementById('admin-db-latency').innerHTML = `${ms} <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">ms</span>`;
+    }
+
+    function renderUsersTable() {
+      const tbody = document.getElementById('admin-user-table');
+      tbody.innerHTML = '';
+      
+      usersDb.forEach(user => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = "1px solid var(--border-color)";
+        
+        tr.innerHTML = `
+          <td style="padding:10px; font-family:monospace;">${user.id}</td>
+          <td style="padding:10px; font-weight:700;">${user.name}</td>
+          <td style="padding:10px;"><span class="result-tag">${user.role}</span></td>
+          <td style="padding:10px; font-weight:600;">${user.xp} XP</td>
+          <td style="padding:10px;">
+            <button class="btn-outline" style="padding:2px 8px; font-size:0.7rem;" onclick="changeUserRole('${user.id}')">Modify Role</button>
+            <button class="btn-outline" style="padding:2px 8px; font-size:0.7rem; color:var(--color-danger);" onclick="banUser('${user.id}')">Ban</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Export CSV / PDF mock
+    window.exportAdminData = function(type) {
+      showToast(`Exported ${type.toUpperCase()} file successfully! Download triggered.`, 'success');
+      addAuditLog(`Admin triggered export action: [${type.toUpperCase()}]`, 'system');
+    };
+
+    // Modify Role
+    window.changeUserRole = function(userId) {
+      const user = usersDb.find(u => u.id === userId);
+      if (user) {
+        user.role = user.role === 'Student' ? 'Instructor' : 'Student';
+        renderUsersTable();
+        showToast(`Changed role for user ${user.name} to ${user.role}`, 'success');
+        addAuditLog(`Modified permission roles for user: ${userId} to [${user.role}]`, 'system');
+      }
+    };
+
+    // Ban user
+    window.banUser = function(userId) {
+      const index = usersDb.findIndex(u => u.id === userId);
+      if (index !== -1) {
+        const name = usersDb[index].name;
+        usersDb.splice(index, 1);
+        renderUsersTable();
+        showToast(`Banned user ${name} successfully!`, 'danger');
+        addAuditLog(`PERMANENT BAN applied to user: ${userId} (${name})`, 'danger');
+      }
+    };
+
+    // Toggles Feature Flags
+    window.toggleFeatureFlag = function(flagId) {
+      const btn = document.getElementById(`toggle-flag-${flagId}`);
+      if (btn.innerText === 'Active') {
+        btn.innerText = 'Disabled';
+        btn.style.color = 'var(--color-danger)';
+        showToast(`Feature flag [${flagId.toUpperCase()}] disabled globally.`, 'warning');
+        addAuditLog(`Flag updated: [${flagId}] -> DISABLED`, 'warning');
+      } else {
+        btn.innerText = 'Active';
+        btn.style.color = 'var(--color-success)';
+        showToast(`Feature flag [${flagId.toUpperCase()}] activated globally.`, 'success');
+        addAuditLog(`Flag updated: [${flagId}] -> ACTIVE`, 'system');
+      }
+    };
+
+    // Backup snapshots
+    window.backupDatabaseSnapshot = function() {
+      showToast('Database snapshots stored on Render cloud storage config.', 'success');
+      addAuditLog('Database backup executed: Snapshot snap_98421_prod created successfully.', 'system');
+    };
+
+    // Audit logger
+    function addAuditLog(msg, type = 'system') {
+      const feed = document.getElementById('admin-audit-logs');
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      
+      const time = new Date().toTimeString().substring(0, 5);
+      entry.innerHTML = `<span class="log-time">${time}</span><span class="log-msg">${msg}</span>`;
+      
+      feed.appendChild(entry);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    // Toast alerts helper
+    function showToast(msg, type = 'primary') {
+      const root = document.getElementById('toast-root');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      let icon = 'fa-info-circle';
+      if (type === 'success') icon = 'fa-check-circle';
+      if (type === 'danger') icon = 'fa-circle-xmark';
+      if (type === 'warning') icon = 'fa-circle-exclamation';
+
+      toast.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <span class="toast-msg">${msg}</span>
+      `;
+      
+      root.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    // Chart.js initialization
+    function renderRevenueChart() {
+      const ctx = document.getElementById('admin-revenue-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Monthly SaaS MRR ($)',
+            data: [7200, 8400, 9100, 10800, 11450, 12450],
+            borderColor: '#ff4400',
+            backgroundColor: 'rgba(239, 68, 68, 0.05)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b', font: { size: 9 } } },
+            x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 9 } } }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

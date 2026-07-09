@@ -1,716 +1,587 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StadiumPulse AI - FIFA World Cup 2026 Smart Hub</title>
-  <!-- Google Fonts -->
+  <title>HackSkill - Premium Developer Productivity & Learning Platform</title>
+  
+  <!-- Font links -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- FontAwesome for beautiful icons -->
+  
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- CSS stylesheet -->
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="src/styles/theme.css">
+  <link rel="stylesheet" href="src/styles/layout.css">
+  <link rel="stylesheet" href="src/styles/components.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- App Container -->
-  <div class="app-container">
-    
-    <!-- Top Header Bar -->
-    <header class="app-header">
-      <div class="logo-area">
-        <div class="fifa-brand">
-          <span class="brand-text">FIFA 26</span>
-          <span class="stadium-tag">METLIFE STADIUM</span>
-        </div>
-        <div class="app-title-container">
-          <i class="fa-solid fa-brain-circuit pulse-icon"></i>
-          <h1>StadiumPulse <span class="accent-text">AI</span></h1>
-        </div>
-      </div>
 
-      <!-- Live Match Ticker -->
-      <div class="match-ticker">
-        <div class="ticker-item live-indicator" id="live-indicator-wrapper">
-          <span class="pulse-dot"></span> LIVE
-        </div>
-        <div class="ticker-item match-score">
-          <img src="https://flagcdn.com/w40/us.png" alt="USA Flag" class="flag-icon">
-          <span class="team-name">USA</span>
-          <span class="score">2 - 1</span>
-          <span class="team-name">MEX</span>
-          <img src="https://flagcdn.com/w40/mx.png" alt="Mexico Flag" class="flag-icon">
-        </div>
-        <div class="ticker-item match-time" id="ticker-match-time">78'</div>
-        <div class="ticker-item stadium-stats">
-          <i class="fa-solid fa-users"></i> <span id="ticker-occupancy">81,300 (98%)</span>
-        </div>
-        <div class="ticker-item temp-stats">
-          <i class="fa-solid fa-temperature-half"></i> <span>74°F / 23°C</span>
-        </div>
-      </div>
+  <!-- Floating background layers -->
+  <div class="noise-overlay"></div>
+  <div class="aurora-bg">
+    <div class="aurora-circle-1"></div>
+    <div class="aurora-circle-2"></div>
+  </div>
 
-      <!-- Navigation Tabs -->
-      <div class="nav-tabs">
-        <button class="tab-btn active" id="tab-fan" onclick="switchTab('fan')">
-          <i class="fa-solid fa-user-astronaut"></i> Fan Companion
-        </button>
-        <button class="tab-btn" id="tab-ops" onclick="switchTab('ops')">
-          <i class="fa-solid fa-sliders"></i> Operations Control
-        </button>
-      </div>
-    </header>
+  <!-- App Main Shell -->
+  <div class="app-shell" id="app-shell">
 
-    <!-- Main Content Container -->
-    <main class="main-content">
+    <!-- ============================================== -->
+    <!-- PUBLIC LANDING PORTAL -->
+    <!-- ============================================== -->
+    <div class="landing-view" id="landing-view">
       
-      <!-- ============================================== -->
-      <!-- FAN PORTAL VIEW -->
-      <!-- ============================================== -->
-      <section class="portal-view active" id="view-fan">
-        <div class="portal-grid fan-grid">
-          
-          <!-- Column 1: AI Match Assistant "Copa" & Audio Companion -->
-          <div class="dashboard-card glass-panel chat-card">
-            <div class="card-header">
-              <div class="header-title">
-                <i class="fa-solid fa-robot"></i>
-                <div>
-                  <h3>"Copa" AI Assistant</h3>
-                  <p class="subtitle">FIFA 26 Multilingual Virtual Guide</p>
-                </div>
-              </div>
-              <!-- Language Selector -->
-              <div class="language-selector">
-                <select id="fan-lang" onchange="changeLanguage()">
-                  <option value="en">🇺🇸 EN</option>
-                  <option value="es">🇲🇽 ES</option>
-                  <option value="fr">🇨🇦 FR</option>
-                </select>
-              </div>
-            </div>
+      <!-- Top header navigation -->
+      <header class="landing-header">
+        <div class="logo-brand">
+          <i class="fa-solid fa-code"></i>
+          <span>HackSkill</span>
+        </div>
+        <nav class="landing-nav">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#pricing" class="nav-link">Pricing</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <button class="btn-outline" onclick="triggerLoginFlow()">Sign In</button>
+          <button class="btn-primary" onclick="triggerLoginFlow()">Get Started <i class="fa-solid fa-arrow-right"></i></button>
+        </nav>
+      </header>
 
-            <!-- Seat input & profile -->
-            <div class="user-meta-inputs">
-              <div class="input-group">
-                <label for="fan-seat"><i class="fa-solid fa-chair"></i> Your Seat</label>
-                <input type="text" id="fan-seat" placeholder="Sec 112, Row M, Seat 5" value="Sec 112, Row M, Seat 5" onchange="updateSeatLocation()">
-              </div>
-              <div class="input-group">
-                <label for="fan-needs"><i class="fa-solid fa-universal-access"></i> Assist Mode</label>
-                <select id="fan-needs" onchange="updateAccessibilityMode()">
-                  <option value="none">Standard Route</option>
-                  <option value="wheelchair">Wheelchair / Step-Free</option>
-                  <option value="stroller">Stroller Friendly</option>
-                  <option value="sensory">Sensory Sensitive</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Chat Message Feed -->
-            <div class="chat-messages" id="fan-chat-messages">
-              <div class="message system-msg">
-                <p>Welcome! "Copa" AI is online. Powered by StadiumPulse GenAI to help with routes, food, transport, translations, and tournament rules.</p>
-              </div>
-              <div class="message ai-msg">
-                <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
-                <div class="msg-content">
-                  <p id="welcome-text">Hello! I am Copa, your FIFA 26 smart stadium assistant. I know your seat is in <strong>Section 112</strong>. How can I help you navigate MetLife Stadium today?</p>
-                  <!-- Audio Synth Trigger -->
-                  <button class="audio-speak-btn" onclick="speakCopaResponse('welcome-text')">
-                    <i class="fa-solid fa-volume-high"></i> Listen to Copa
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Audio Waveform Live Visualizer (displays when speaking) -->
-            <div class="audio-waveform-box" id="audio-waveform" style="display: none;">
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-bar"></span>
-              <span class="wave-text">Copa AI Audio Companion Speaking...</span>
-              <button class="wave-stop-btn" onclick="stopSpeaking()"><i class="fa-solid fa-square"></i></button>
-            </div>
-
-            <!-- Suggested Questions -->
-            <div class="chat-suggestions">
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('nearest_restroom')">🚻 Restrooms</span>
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('taco_stand')">🌮 Find Tacos</span>
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('metro_route')">🚇 Metro Terminal</span>
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('accessibility')">♿ Accessibility Lift</span>
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('translate_phrase')">🗣️ Translate phrase</span>
-              <span class="suggestion-tag" onclick="sendSuggestedQuestion('match_fact')">⚽ Match Stats</span>
-            </div>
-
-            <!-- Input Bar -->
-            <div class="chat-input-bar">
-              <input type="text" id="fan-chat-input" placeholder="Ask Copa about routes, concessions, schedules..." onkeypress="handleChatKey(event)">
-              <button class="send-btn" onclick="sendFanMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
+      <!-- Immersive Hero Banner -->
+      <section class="hero-section">
+        <div class="hero-left">
+          <span class="badge-tag">AI Developer Hub</span>
+          <h1 class="hero-title">Elevate Coding with <span>Generative AI</span></h1>
+          <p class="hero-subtitle">
+            Experience a developer learning operating system combining interactive sandboxes, AI code assistants, custom roadmaps, and career coaching metrics.
+          </p>
+          <div class="cta-row">
+            <button class="btn-primary" onclick="triggerLoginFlow()">Access Workspace <i class="fa-solid fa-terminal"></i></button>
+            <a href="#features" class="btn-outline">Explore Features</a>
           </div>
-
-          <!-- Column 2: Interactive SVG Stadium Map with Route Tracing -->
-          <div class="dashboard-card glass-panel map-card">
-            <div class="card-header">
-              <div class="header-title">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <div>
-                  <h3>Interactive Smart Map</h3>
-                  <p class="subtitle">Real-time crowd overlays and path routing</p>
-                </div>
-              </div>
-              <!-- Map Layer Controls -->
-              <div class="map-controls">
-                <button class="map-layer-btn active" id="btn-density" onclick="toggleMapLayer('density')">
-                  <i class="fa-solid fa-fire-flame-simple"></i> Crowd Density
-                </button>
-                <button class="map-layer-btn" id="btn-facilities" onclick="toggleMapLayer('facilities')">
-                  <i class="fa-solid fa-circle-info"></i> Icons
-                </button>
-              </div>
+        </div>
+        <div class="hero-right">
+          <!-- Floating Mock Editor -->
+          <div class="preview-container">
+            <div class="preview-header">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span class="preview-title">HackSkill.js - Playground</span>
             </div>
+            <pre class="preview-editor"><code>// HackSkill Smart Simulator Engine
+const developer = {
+  name: "Akash",
+  xp: 2450,
+  streak: 5,
+  readyToCode: true
+};
 
-            <!-- Map Viewport -->
-            <div class="map-viewport">
-              <svg id="stadium-svg" viewBox="0 0 800 600" width="100%" height="100%">
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
-                  </pattern>
-                  <radialGradient id="field-glow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#00ff66" stop-opacity="0.15" />
-                    <stop offset="100%" stop-color="#00ff66" stop-opacity="0" />
-                  </radialGradient>
-                  <!-- Pulse filters -->
-                  <filter id="glow-neon" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="8" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
-                  <filter id="glow-emergency" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
-                </defs>
-                <rect width="800" height="600" fill="url(#grid)" />
+function runCodeReview(dev) {
+  if (dev.readyToCode) {
+    console.log("Analyzing Code telemetry...");
+    return "Optimizations applied. XP +100!";
+  }
+}
 
-                <!-- The Soccer Pitch Glow -->
-                <ellipse cx="400" cy="300" rx="140" ry="100" fill="url(#field-glow)" />
-
-                <!-- Outer Metro Station Link -->
-                <g class="map-landmark" id="station-metro" transform="translate(100, 100)">
-                  <circle cx="0" cy="0" r="22" class="landmark-bg metro" />
-                  <i class="fa-solid fa-train text-icon"></i>
-                  <text x="0" y="38" text-anchor="middle" class="landmark-label">Metro Terminal</text>
-                </g>
-
-                <!-- Outer Parking Areas -->
-                <g class="map-landmark" id="parking-lot-a" transform="translate(700, 120)">
-                  <circle cx="0" cy="0" r="20" class="landmark-bg parking" />
-                  <text x="0" y="5" text-anchor="middle" class="landmark-letter">P</text>
-                  <text x="0" y="35" text-anchor="middle" class="landmark-label">Lot A (Rideshare)</text>
-                </g>
-                <g class="map-landmark" id="parking-lot-b" transform="translate(720, 480)">
-                  <circle cx="0" cy="0" r="20" class="landmark-bg parking" />
-                  <text x="0" y="5" text-anchor="middle" class="landmark-letter">P</text>
-                  <text x="0" y="35" text-anchor="middle" class="landmark-label">Lot B (General)</text>
-                </g>
-
-                <!-- Gate Nodes (Outer Ring of Stadium Structure) -->
-                <g class="map-node" id="node-gate-a" transform="translate(400, 120)">
-                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="A" />
-                  <text x="0" y="5" text-anchor="middle" class="node-txt">A</text>
-                  <text x="0" y="-22" text-anchor="middle" class="node-label">Gate A</text>
-                </g>
-                <g class="map-node" id="node-gate-b" transform="translate(620, 300)">
-                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="B" />
-                  <text x="0" y="5" text-anchor="middle" class="node-txt">B</text>
-                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate B</text>
-                </g>
-                <g class="map-node" id="node-gate-c" transform="translate(400, 480)">
-                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="C" />
-                  <text x="0" y="5" text-anchor="middle" class="node-txt">C</text>
-                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate C</text>
-                </g>
-                <g class="map-node" id="node-gate-d" transform="translate(180, 300)">
-                  <circle cx="0" cy="0" r="16" class="gate-node" data-gate="D" />
-                  <text x="0" y="5" text-anchor="middle" class="node-txt">D</text>
-                  <text x="0" y="28" text-anchor="middle" class="node-label">Gate D</text>
-                </g>
-
-                <!-- Stadium Oval Structure Rings (Concourses) -->
-                <ellipse cx="400" cy="300" rx="190" ry="135" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
-                <ellipse cx="400" cy="300" rx="220" ry="160" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-
-                <!-- Stadium Seat Blocks -->
-                <!-- Sectors Top Left -->
-                <path d="M 330 185 A 190 135 0 0 0 250 250 L 225 240 A 220 160 0 0 1 315 165 Z" class="seat-block block-green" id="block-110" data-block="110" onclick="selectSeatBlock('110')" />
-                <!-- Sector Top (Sec 112 near Gate A) -->
-                <path d="M 335 180 A 190 135 0 0 1 465 180 L 475 160 A 220 160 0 0 0 325 160 Z" class="seat-block block-green" id="block-112" data-block="112" onclick="selectSeatBlock('112')" />
-                <!-- Sector Top Right -->
-                <path d="M 470 185 A 190 135 0 0 1 550 250 L 575 240 A 220 160 0 0 0 485 165 Z" class="seat-block block-orange" id="block-114" data-block="114" onclick="selectSeatBlock('114')" />
-                <!-- Sector Bottom Right -->
-                <path d="M 550 350 A 190 135 0 0 1 470 415 L 485 435 A 220 160 0 0 0 575 360 Z" class="seat-block block-green" id="block-118" data-block="118" onclick="selectSeatBlock('118')" />
-                <!-- Sector Bottom -->
-                <path d="M 465 420 A 190 135 0 0 1 335 420 L 325 440 A 220 160 0 0 0 475 440 Z" class="seat-block block-red" id="block-120" data-block="120" onclick="selectSeatBlock('120')" />
-                <!-- Sector Bottom Left -->
-                <path d="M 250 350 A 190 135 0 0 0 330 415 L 315 435 A 220 160 0 0 1 225 360 Z" class="seat-block block-green" id="block-122" data-block="122" onclick="selectSeatBlock('122')" />
-                <!-- Sector Left Mid -->
-                <path d="M 245 260 A 190 135 0 0 0 245 340 L 220 345 A 220 160 0 0 1 220 255 Z" class="seat-block block-yellow" id="block-104" data-block="104" onclick="selectSeatBlock('104')" />
-                <!-- Sector Right Mid -->
-                <path d="M 555 260 A 190 135 0 0 1 555 340 L 580 345 A 220 160 0 0 0 580 255 Z" class="seat-block block-green" id="block-116" data-block="116" onclick="selectSeatBlock('116')" />
-
-                <!-- Text labels on seat blocks -->
-                <text x="400" y="145" class="block-label">112</text>
-                <text x="515" y="195" class="block-label">114</text>
-                <text x="595" y="305" class="block-label">116</text>
-                <text x="515" y="415" class="block-label">118</text>
-                <text x="400" y="465" class="block-label">120</text>
-                <text x="285" y="415" class="block-label">122</text>
-                <text x="205" y="305" class="block-label">104</text>
-                <text x="285" y="195" class="block-label">110</text>
-
-                <!-- Facilities Icons -->
-                <g class="map-facility" id="fac-restroom-114" transform="translate(520, 230)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg" />
-                  <text x="0" y="3" class="facility-icon">🚻</text>
-                </g>
-                <g class="map-facility" id="fac-restroom-122" transform="translate(280, 370)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg" />
-                  <text x="0" y="3" class="facility-icon">🚻</text>
-                </g>
-                <g class="map-facility" id="fac-food-tacos" transform="translate(270, 230)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg" />
-                  <text x="0" y="3" class="facility-icon">🌮</text>
-                </g>
-                <g class="map-facility" id="fac-food-burgers" transform="translate(530, 370)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg" />
-                  <text x="0" y="3" class="facility-icon">🍔</text>
-                </g>
-                <g class="map-facility" id="fac-elevator" transform="translate(210, 275)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg special" />
-                  <text x="0" y="3.5" class="facility-icon small">♿</text>
-                </g>
-                <g class="map-facility" id="fac-aid" transform="translate(400, 445)">
-                  <circle cx="0" cy="0" r="10" class="facility-bg" />
-                  <text x="0" y="3.5" class="facility-icon small">🩺</text>
-                </g>
-
-                <!-- Emergency Evacuation Blinking Vectors (drawn in JS or hidden path arrays) -->
-                <g id="evacuation-vectors" style="display: none;">
-                  <line x1="400" y1="170" x2="400" y2="120" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="510" y1="205" x2="620" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="570" y1="300" x2="620" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="510" y1="395" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="400" y1="430" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="290" y1="395" x2="400" y2="480" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="230" y1="300" x2="180" y2="300" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                  <line x1="290" y1="205" x2="400" y2="120" stroke="#ff0044" stroke-width="3" stroke-dasharray="5,5" filter="url(#glow-emergency)" class="evac-line" />
-                </g>
-
-                <!-- Navigation Route Overlay Path -->
-                <path id="route-path" d="" fill="none" stroke="#00f3ff" stroke-width="4" stroke-dasharray="8, 6" filter="url(#glow-neon)" style="display: none;" />
-                
-                <!-- Highlight Indicator (Seat marker) -->
-                <g id="seat-marker" transform="translate(0,0)" style="display:none;">
-                  <circle cx="0" cy="0" r="10" class="marker-pulse-outer" />
-                  <circle cx="0" cy="0" r="5" class="marker-pulse-inner" />
-                </g>
-              </svg>
-            </div>
-            
-            <!-- Map Legend -->
-            <div class="map-legend">
-              <div class="legend-title">Density Heatmap:</div>
-              <div class="legend-items">
-                <span class="legend-color density-green"></span> Low (< 5 min queue)
-                <span class="legend-color density-yellow"></span> Moderate (5-10 min)
-                <span class="legend-color density-orange"></span> Busy (10-20 min)
-                <span class="legend-color density-red"></span> Congested (> 20 min)
-              </div>
-            </div>
+runCodeReview(developer);</code></pre>
           </div>
-
-          <!-- Column 3: Sustainability, Smart Pre-order & Transit -->
-          <div class="dashboard-card glass-panel fan-sidebar-card">
-            
-            <!-- NEW: GenAI Smart Food Pre-order & Pick-up Optimizer -->
-            <div class="sidebar-section">
-              <div class="section-title">
-                <i class="fa-solid fa-burger"></i>
-                <h4>AI Concession Pre-Order</h4>
-              </div>
-              <p class="section-desc">GenAI schedules pickup windows to avoid concourse queues.</p>
-              
-              <div class="food-order-form">
-                <div class="form-row">
-                  <label>Select Item</label>
-                  <select id="food-item-select">
-                    <option value="tacos">🌮 Championship Taco Basket ($12.00)</option>
-                    <option value="burger">🍔 Big Kick Beef Burger ($14.50)</option>
-                    <option value="pretzel">🥨 Golden Goal Soft Pretzel ($7.00)</option>
-                  </select>
-                </div>
-                <button class="action-btn-green" onclick="optimizeFoodOrder()"><i class="fa-solid fa-clock-rotate-left"></i> Optimize Order Time</button>
-              </div>
-
-              <!-- Food Output Box -->
-              <div class="food-results-box" id="food-results" style="display: none;">
-                <div class="food-header-row">
-                  <span class="food-item-title" id="food-title-res">Championship Tacos</span>
-                  <span class="food-badge" id="food-time-res">15:12 Pickup</span>
-                </div>
-                <p class="food-desc" id="food-desc-res">GenAI allocated window at Concourse Sec 110. Your queue wait is optimized down to 1.5 minutes. (Bypasses general 8-min queue).</p>
-                <div class="food-barcode-stub">
-                  <div class="fake-barcode"></div>
-                  <span class="barcode-txt">ORDER #ST-482910</span>
-                </div>
-              </div>
-            </div>
-
-            <hr class="card-divider">
-
-            <!-- Commute & Smart Parking Advisor -->
-            <div class="sidebar-section">
-              <div class="section-title">
-                <i class="fa-solid fa-bus-simple"></i>
-                <h4>Commute & Transit Planner</h4>
-              </div>
-              <div class="transit-form">
-                <div class="form-row">
-                  <label><i class="fa-solid fa-map-pin"></i> From</label>
-                  <select id="commute-origin">
-                    <option value="manhattan">🏙️ Manhattan (Penn Station)</option>
-                    <option value="newark">✈️ Newark Airport (EWR)</option>
-                    <option value="secaucus">🚉 Secaucus Junction</option>
-                    <option value="local">🚗 Local Parking Lot B</option>
-                  </select>
-                </div>
-                <div class="form-row">
-                  <label><i class="fa-solid fa-leaf"></i> Focus</label>
-                  <select id="commute-preference">
-                    <option value="fastest">⚡ Fastest Route</option>
-                    <option value="eco">🌱 Lowest Carbon Footprint</option>
-                    <option value="accessible">♿ Accessible (Step-free)</option>
-                  </select>
-                </div>
-                <button class="action-btn" onclick="calculateCommute()"><i class="fa-solid fa-calculator"></i> Calculate Commute</button>
-              </div>
-
-              <!-- Journey Card -->
-              <div class="transit-results-box" id="transit-results" style="display: none;">
-                <div class="transit-summary">
-                  <div class="summary-stat">
-                    <span class="lbl">ETA</span>
-                    <span class="val" id="transit-eta">42 mins</span>
-                  </div>
-                  <div class="summary-stat">
-                    <span class="lbl">Carbon</span>
-                    <span class="val green-text" id="transit-carbon">-65% 🌱</span>
-                  </div>
-                  <div class="summary-stat">
-                    <span class="lbl">Best Gate</span>
-                    <span class="val" id="transit-gate">Gate D</span>
-                  </div>
-                </div>
-                <div class="timeline" id="transit-timeline">
-                  <!-- JS fills this -->
-                </div>
-              </div>
-            </div>
-
-            <hr class="card-divider">
-
-            <!-- Sustainability Tracker -->
-            <div class="sidebar-section">
-              <div class="section-title">
-                <i class="fa-solid fa-seedling"></i>
-                <h4>Eco-Fan Challenge</h4>
-              </div>
-              <p class="section-desc">Participate in MetLife Stadium's FIFA 26 zero-waste goal and unlock discount vouchers!</p>
-              
-              <div class="eco-progress">
-                <div class="eco-label-row">
-                  <span>Carbon Offset points</span>
-                  <strong id="eco-pts-display">120 / 200 PTS</strong>
-                </div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill eco-color" id="eco-progress-fill" style="width: 60%;"></div>
-                </div>
-              </div>
-
-              <div class="eco-actions-checklist">
-                <div class="eco-check-item completed">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Arrived via Transit (+50 pts)</span>
-                </div>
-                <div class="eco-check-item completed">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Used Digital Mobile Ticket (+20 pts)</span>
-                </div>
-                <div class="eco-check-item" id="eco-cup-item" onclick="completeEcoAction('cup')">
-                  <i class="fa-regular fa-circle" id="eco-cup-icon"></i>
-                  <span>Return reusable drink cup (+50 pts)</span>
-                </div>
-                <div class="eco-check-item" id="eco-waste-item" onclick="completeEcoAction('waste')">
-                  <i class="fa-regular fa-circle" id="eco-waste-icon"></i>
-                  <span>Sort food waste in green bin (+30 pts)</span>
-                </div>
-              </div>
-              <div class="voucher-box" id="voucher-box" style="display: none;">
-                <div class="voucher-header">🎉 Voucher Unlocked!</div>
-                <div class="voucher-body">
-                  <span class="voucher-code">ECOWORLD26</span>
-                  <span class="voucher-desc">15% off any merch at Store Sec 112</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
-      <!-- ============================================== -->
-      <!-- OPERATIONS COMMAND VIEW -->
-      <!-- ============================================== -->
-      <section class="portal-view" id="view-ops">
-        <div class="portal-grid ops-grid">
-          
-          <!-- Column 1: Live Stadium Telemetry & Sentiment Analyzer -->
-          <div class="dashboard-card glass-panel telemetry-card">
-            <div class="card-header">
-              <div class="header-title">
-                <i class="fa-solid fa-chart-line"></i>
-                <div>
-                  <h3>Stadium Operations Feed</h3>
-                  <p class="subtitle">Real-time telemetry and threshold alerts</p>
-                </div>
-              </div>
-              <div class="system-status-pill green-pill" id="system-status-indicator">
-                <span class="status-dot"></span> System Normal
-              </div>
+      <!-- Features presentation -->
+      <section class="features-section" id="features">
+        <div class="section-head">
+          <span class="badge-tag">Platform Features</span>
+          <h2>A Developer Ecosystem Valuation</h2>
+          <p>HackSkill transforms general coding exercises into an integrated production developer environment.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="glass-card">
+            <i class="fa-solid fa-keyboard" style="color:var(--color-primary); font-size:1.8rem;"></i>
+            <h3>Interactive Sandbox</h3>
+            <p>Write, compile, and execute code in an integrated console with syntax checking mechanisms.</p>
+          </div>
+          <div class="glass-card">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--color-secondary); font-size:1.8rem;"></i>
+            <h3>AI Mentor Guides</h3>
+            <p>An intelligent virtual tutor that designs custom roadmap courses and reviews code loops.</p>
+          </div>
+          <div class="glass-card">
+            <i class="fa-solid fa-briefcase" style="color:var(--color-info); font-size:1.8rem;"></i>
+            <h3>Career Optimization</h3>
+            <p>Paste your resume for audit reviews or practices questions with the AI Interview Coach.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Plans -->
+      <section class="pricing-section" id="pricing">
+        <div class="section-head">
+          <h2>Flexible Pricing Plans</h2>
+          <p>Access advanced compilers, global leaderboards, and persistent workspaces.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="glass-card">
+            <h3>Hobbyist</h3>
+            <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);">$0 <span style="font-size:0.9rem; color:var(--text-muted);">/ mo</span></div>
+            <p>Access basics playgrounds and standard study paths.</p>
+            <button class="btn-outline" onclick="triggerLoginFlow()" style="margin-top:var(--space-2)">Start Free</button>
+          </div>
+          <div class="glass-card card-premium" style="background: rgba(0, 243, 255, 0.03);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>Developer Pro</h3>
+              <span class="badge-tag">RECOMMENDED</span>
             </div>
+            <div style="font-size:2rem; font-weight:800; font-family:var(--font-display);">$15 <span style="font-size:0.9rem; color:var(--text-muted);">/ mo</span></div>
+            <p>Unlocks AI Mentor text-to-speech, code audits, and resume audits.</p>
+            <button class="btn-primary" onclick="triggerLoginFlow()" style="margin-top:var(--space-2)">Upgrade Now</button>
+          </div>
+        </div>
+      </section>
 
-            <!-- Telemetry Metrics Grid -->
-            <div class="metrics-grid">
-              
-              <!-- Gate A Queue -->
-              <div class="metric-box" id="metric-gate-a">
-                <div class="metric-header">
-                  <span>Gate A (North Entrance)</span>
-                  <span class="metric-badge success">Light</span>
-                </div>
-                <div class="metric-value"><span id="val-gate-a">4</span> mins</div>
-                <div class="metric-sub">Queue: ~120 fans • 8 Turnstiles Active</div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill bg-success" id="bar-gate-a" style="width: 15%;"></div>
-                </div>
-              </div>
+      <!-- FAQ Accordions -->
+      <section class="faq-section" id="faq">
+        <div class="section-head">
+          <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-list">
+          <div class="accordion-item">
+            <div class="accordion-trigger">What is HackSkill? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="accordion-content">HackSkill is a developer productivity platform designed to simulate modern workspaces, offering structured learning alongside active code execution.</div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-trigger">How does the AI Mentor work? <i class="fa-solid fa-chevron-down"></i></div>
+            <div class="accordion-content">The AI Mentor leverages local NLP semantic generators to review codes, explain algorithms, and read voice guides using standard web speech engines.</div>
+          </div>
+        </div>
+      </section>
 
-              <!-- Gate B Queue -->
-              <div class="metric-box" id="metric-gate-b">
-                <div class="metric-header">
-                  <span>Gate B (East Entrance)</span>
-                  <span class="metric-badge warning">Busy</span>
-                </div>
-                <div class="metric-value"><span id="val-gate-b">14</span> mins</div>
-                <div class="metric-sub">Queue: ~480 fans • 7 Turnstiles Active</div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill bg-warning" id="bar-gate-b" style="width: 60%;"></div>
-                </div>
-              </div>
+      <!-- Public Footer -->
+      <footer class="app-footer">
+        <div>&copy; 2026 HackSkill Inc. All rights reserved.</div>
+        <div>Valued SaaS Platform</div>
+      </footer>
+    </div>
 
-              <!-- Gate C Queue -->
-              <div class="metric-box" id="metric-gate-c">
-                <div class="metric-header">
-                  <span>Gate C (South Entrance)</span>
-                  <span class="metric-badge danger">Heavy</span>
-                </div>
-                <div class="metric-value"><span id="val-gate-c">26</span> mins</div>
-                <div class="metric-sub">Queue: ~920 fans • 5 Turnstiles Active</div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill bg-danger" id="bar-gate-c" style="width: 88%;"></div>
-                </div>
-              </div>
+    <!-- ============================================== -->
+    <!-- STUDENT OS WORKSPACE DASHBOARD -->
+    <!-- ============================================== -->
+    <div class="dashboard-shell" id="student-shell">
+      
+      <!-- Left sidebar navigation panel -->
+      <aside class="sidebar-panel">
+        <div class="logo-brand">
+          <i class="fa-solid fa-code"></i>
+          <span>HackSkill</span>
+        </div>
+        
+        <nav class="sidebar-menu">
+          <div class="menu-item active" id="menu-overview" onclick="switchDashboardTab('overview')">
+            <i class="fa-solid fa-chart-simple"></i> Dashboard
+          </div>
+          <div class="menu-item" id="menu-courses" onclick="switchDashboardTab('courses')">
+            <i class="fa-solid fa-book-open"></i> Courses
+          </div>
+          <div class="menu-item" id="menu-playground" onclick="switchDashboardTab('playground')">
+            <i class="fa-solid fa-laptop-code"></i> Playground
+          </div>
+          <div class="menu-item" id="menu-mentor" onclick="switchDashboardTab('mentor')">
+            <i class="fa-solid fa-robot"></i> AI Mentor
+          </div>
+          <div class="menu-item" id="menu-career" onclick="switchDashboardTab('career')">
+            <i class="fa-solid fa-briefcase"></i> Career Hub
+          </div>
+          <div class="menu-item" id="menu-leaderboard" onclick="switchDashboardTab('leaderboard')">
+            <i class="fa-solid fa-trophy"></i> Leaderboards
+          </div>
+          <div class="menu-item" id="menu-certificates" onclick="switchDashboardTab('certificates')">
+            <i class="fa-solid fa-certificate"></i> Certifications
+          </div>
+        </nav>
 
-              <!-- Gate D Queue -->
-              <div class="metric-box" id="metric-gate-d">
-                <div class="metric-header">
-                  <span>Gate D (West Entrance)</span>
-                  <span class="metric-badge success">Light</span>
-                </div>
-                <div class="metric-value"><span id="val-gate-d">7</span> mins</div>
-                <div class="metric-sub">Queue: ~190 fans • 8 Turnstiles Active</div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill bg-success" id="bar-gate-d" style="width: 25%;"></div>
-                </div>
-              </div>
+        <div class="sidebar-footer">
+          <!-- Link to admin page -->
+          <a href="admin.html" target="_blank" class="menu-item" style="padding:4px;"><i class="fa-solid fa-users-gear"></i> Admin</a>
+          <button class="btn-outline" onclick="triggerLogout()" style="padding:6px 12px; font-size:0.75rem;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Exit</button>
+        </div>
+      </aside>
 
-              <!-- Water & Sanitary Pressures -->
-              <div class="metric-box inline-box">
-                <div class="box-icon"><i class="fa-solid fa-droplet blue-text"></i></div>
-                <div class="box-content">
-                  <div class="box-title">Sanitary Water Flow</div>
-                  <div class="box-val" id="val-water">58 PSI <span class="sub-text">(Normal)</span></div>
-                </div>
-              </div>
-
-              <!-- Waste Levels -->
-              <div class="metric-box inline-box">
-                <div class="box-icon"><i class="fa-solid fa-trash-can green-text"></i></div>
-                <div class="box-content">
-                  <div class="box-title">Waste Bins capacity</div>
-                  <div class="box-val" id="val-waste">41% <span class="sub-text">(620kg Sorted Today)</span></div>
-                </div>
-              </div>
-
-              <!-- Solar & Grid Power -->
-              <div class="metric-box inline-box">
-                <div class="box-icon"><i class="fa-solid fa-solar-panel yellow-text"></i></div>
-                <div class="box-content">
-                  <div class="box-title">Eco-Grid Generation</div>
-                  <div class="box-val" id="val-energy">320 kW <span class="sub-text">(34% Solar Offsetting)</span></div>
-                </div>
-              </div>
-
-              <!-- First Aid / Medical Cases -->
-              <div class="metric-box inline-box">
-                <div class="box-icon"><i class="fa-solid fa-heart-pulse red-text"></i></div>
-                <div class="box-content">
-                  <div class="box-title">Active Medical Cases</div>
-                  <div class="box-val" id="val-incidents">0 <span class="sub-text">Dispatch Ready</span></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Operations Logs Feed -->
-            <div class="ops-logs-section">
-              <h4><i class="fa-solid fa-clock-rotate-left"></i> Live Event & AI Dispatch Logs</h4>
-              <div class="logs-feed" id="ops-logs-feed">
-                <div class="log-entry system">
-                  <span class="log-time">14:10</span>
-                  <span class="log-msg">Operations Database initialized for Match 43. USA vs MEX.</span>
-                </div>
-                <div class="log-entry ai">
-                  <span class="log-time">14:22</span>
-                  <span class="log-msg">🤖 StadiumPulse AI: Optimal entry routing plan distributed to 45,000 Fan Portal clients.</span>
-                </div>
-              </div>
+      <!-- Right content workspace panel -->
+      <main class="workspace-panel">
+        
+        <!-- Top Workspace header -->
+        <header class="workspace-header">
+          <div style="display:flex; align-items:center; gap:var(--space-2);">
+            <h2 id="workspace-title" style="font-family:var(--font-display); font-weight:700;">Overview Dashboard</h2>
+            <div class="search-shortcut" onclick="CommandPalette.open()" style="cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid var(--border-color); border-radius:6px; padding:4px 10px; font-size:0.75rem; color:var(--text-muted);">
+              Press <kbd style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:2px;">Ctrl+K</kbd> to search
             </div>
           </div>
-
-          <!-- Column 2: AI Decision Support, Sentiment Analyzer & Evac Simulator -->
-          <div class="dashboard-card glass-panel decisions-card">
-            <div class="card-header">
-              <div class="header-title">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <div>
-                  <h3>AI Operations Copilot</h3>
-                  <p class="subtitle">Simulate incidents and view real-time GenAI suggestions</p>
-                </div>
+          
+          <div style="display:flex; align-items:center; gap:var(--space-2);">
+            <!-- Streak Flame Widget -->
+            <div class="streak-widget">
+              <span class="streak-flame">🔥</span>
+              <div>
+                <div style="font-size:0.8rem; font-weight:800;" id="user-streak-txt">5 Days</div>
+                <div style="font-size:0.6rem; color:var(--text-muted);">Daily Streak</div>
               </div>
             </div>
 
-            <!-- NEW: GenAI Crowdsourced Social Sentiment Analyzer -->
-            <div class="ops-sentiment-section">
-              <div class="sentiment-gauge-wrapper">
-                <div class="sentiment-meta">
-                  <span class="gauge-lbl">Crowd Sentiment Score</span>
-                  <strong class="gauge-val" id="sentiment-score-val">84% Positive</strong>
-                </div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar-fill sentiment-color" id="sentiment-fill" style="width: 84%;"></div>
-                </div>
-              </div>
-              <!-- Social feed scraper feed -->
-              <div class="sentiment-ticker-box">
-                <div class="ticker-inner" id="social-feedback-ticker">
-                  <div class="social-post positive"><span class="user-handle">@fan_us99:</span> "Incredible goal by McKennie! Section 112 is rockin! 🇺🇸⚽"</div>
-                  <div class="social-post neutral"><span class="user-handle">@metlife_goer:</span> "Arrived via train. Security gates moved pretty fast. Nice weather."</div>
-                  <div class="social-post negative"><span class="user-handle">@mex_futbol_fan:</span> "Stuck in gate C ticket queue for 20 mins already. Moving very slow! 😤"</div>
-                </div>
-              </div>
-            </div>
+            <!-- Theme Toggler -->
+            <button class="btn-outline" onclick="toggleTheme()" style="width:36px; height:36px; padding:0; justify-content:center;">
+              <i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i>
+            </button>
 
-            <!-- Scenario Simulator Controls -->
-            <div class="simulation-controller">
-              <h5><i class="fa-solid fa-gamepad"></i> Event Simulation Deck</h5>
-              <p class="sec-help">Trigger stadium events to test AI adaptive logic & notifications.</p>
+            <!-- User Info Badge -->
+            <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); padding:4px var(--space-2); border-radius:10px;">
+              <div style="width:30px; height:30px; border-radius:50%; background:var(--color-primary); color:var(--text-inverse); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem;" id="user-avatar">
+                D
+              </div>
+              <span id="user-profile-name" style="font-size:0.85rem; font-weight:700;">Developer</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dynamic workspace tabs container -->
+        
+        <!-- Tab: Overview -->
+        <section class="workspace-content active" id="view-overview">
+          <div class="dashboard-grid">
+            <div style="display:flex; flex-direction:column; gap:var(--space-3)">
               
-              <div class="simulator-buttons">
-                <button class="sim-btn" id="sim-rain" onclick="triggerSimulation('rain')">
-                  <i class="fa-solid fa-cloud-showers-heavy"></i> Sudden Downpour
-                </button>
-                <button class="sim-btn" id="sim-metro" onclick="triggerSimulation('metro')">
-                  <i class="fa-solid fa-train-subway"></i> Metro Delay Alert
-                </button>
-                <button class="sim-btn" id="sim-surge" onclick="triggerSimulation('surge')">
-                  <i class="fa-solid fa-users-viewfinder"></i> Sector 120 Crowd Surge
-                </button>
-                <button class="sim-btn" id="sim-power" onclick="triggerSimulation('power')">
-                  <i class="fa-solid fa-bolt-lightning"></i> Grid Power Drop
-                </button>
-                <!-- NEW Evacuation Simulator -->
-                <button class="sim-btn critical" id="sim-evac" onclick="triggerSimulation('evac')">
-                  <i class="fa-solid fa-triangle-exclamation"></i> Emergency Evacuate
-                </button>
-                <button class="sim-btn danger" id="sim-reset" onclick="triggerSimulation('reset')">
-                  <i class="fa-solid fa-rotate-left"></i> Reset System
-                </button>
+              <!-- Metrics Cards Row -->
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2)">
+                <div class="glass-card">
+                  <div style="color:var(--text-muted); font-size:0.75rem; font-weight:700; text-transform:uppercase;">Experience Points (XP)</div>
+                  <div style="font-size:2.2rem; font-weight:800; font-family:var(--font-display);" id="user-xp">2450 <span style="font-size:0.9rem; font-weight:600; color:var(--text-muted);">XP</span></div>
+                  <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Target: 3000 XP to level up</div>
+                  <!-- Progress bar -->
+                  <div class="progress-bar-container" style="margin-top:var(--space-1)">
+                    <div class="progress-bar-fill eco-color" id="user-level-bar" style="width: 45%;"></div>
+                  </div>
+                </div>
+
+                <div class="glass-card">
+                  <div style="color:var(--text-muted); font-size:0.75rem; font-weight:700; text-transform:uppercase;">Current Level</div>
+                  <div style="font-size:2.2rem; font-weight:800; font-family:var(--font-display);" id="user-level">Lv. 3</div>
+                  <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Software Engineer I</div>
+                </div>
               </div>
+
+              <!-- Commits Activity Chart -->
+              <div class="glass-card">
+                <h3>Weekly Coding Commits</h3>
+                <p class="subtitle">Git pushes and sandbox executions monitored</p>
+                <div class="telemetry-chart-container" style="position:relative; width:100%; height:180px;">
+                  <canvas id="student-commits-chart"></canvas>
+                </div>
+              </div>
+
             </div>
 
-            <!-- GenAI Recommendation Center -->
-            <div class="ops-ai-recommendations">
-              <h5><i class="fa-solid fa-lightbulb"></i> Dynamic GenAI Action Items</h5>
-              <div class="ai-cards-container" id="ai-rec-container">
-                <div class="ai-rec-card info-card">
-                  <div class="rec-icon"><i class="fa-solid fa-circle-info"></i></div>
-                  <div class="rec-content">
-                    <h6>Dynamic Entry Routing Active</h6>
-                    <p>GenAI recommends guiding arriving fans in Lot B to utilize Gate D instead of Gate C. Gate D currently boasts 60% lower queue time. Digital displays updated.</p>
-                    <div class="rec-actions">
-                      <button class="rec-btn approve" onclick="executeOpsAction('reroute_d')">Reroute Active</button>
+            <!-- Side Cards -->
+            <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+              <!-- Streaks / Goals Card -->
+              <div class="glass-card">
+                <h3>Daily Targets</h3>
+                <div class="eco-actions-checklist" style="margin-top:var(--space-1)">
+                  <div class="eco-check-item completed">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Execute JavaScript script (+20 XP)</span>
+                  </div>
+                  <div class="eco-check-item" id="target-review" onclick="claimDailyTarget('review')">
+                    <i class="fa-regular fa-circle" id="target-review-icon"></i>
+                    <span>Run AI Code Review (+50 XP)</span>
+                  </div>
+                  <div class="eco-check-item" id="target-mentor" onclick="claimDailyTarget('mentor')">
+                    <i class="fa-regular fa-circle" id="target-mentor-icon"></i>
+                    <span>Chat with AI Mentor (+30 XP)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Activity Log -->
+              <div class="glass-card" style="flex:1;">
+                <h3>Recent Activity Feed</h3>
+                <div class="ops-logs-section" style="height:220px; background:transparent; padding:0; margin-top:var(--space-1)">
+                  <div class="logs-feed" id="student-activity-feed">
+                    <div class="log-entry system">
+                      <span class="log-time">10:14</span>
+                      <span class="log-msg">Logged in from workspace client</span>
+                    </div>
+                    <div class="log-entry ai">
+                      <span class="log-time">10:18</span>
+                      <span class="log-msg">🤖 AI: Plotted study roadmap successfully</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            <!-- Operations Command Input Console -->
-            <div class="ops-console-input-section">
-              <h5><i class="fa-solid fa-terminal"></i> Natural Language Command Console</h5>
-              <p class="console-help">Instruct StadiumPulse AI in plain English. e.g. "dispatch security to gate C" or "run eco optimization check".</p>
-              <div class="console-input-row">
-                <span class="prompt-symbol">&gt;_</span>
-                <input type="text" id="ops-command-input" placeholder="Type a prompt for StadiumPulse Copilot..." onkeypress="handleOpsCommandKey(event)">
-                <button class="ops-exec-btn" onclick="executeOpsCommand()"><i class="fa-solid fa-play"></i> Execute</button>
-              </div>
-              <div class="console-response-box" id="ops-console-response" style="display: none;">
-                <!-- AI feedback output -->
-              </div>
-            </div>
+        <!-- Tab: Courses -->
+        <section class="workspace-content" id="view-courses">
+          <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-3); max-width:100%;">
+            <h2>Available Syllabus Courses</h2>
+            <p>Enroll in learning paths to certify your engineering skills.</p>
           </div>
 
-        </div>
-      </section>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:var(--space-3)">
+            <div class="glass-card">
+              <span class="badge-tag">BEGINNER</span>
+              <h3>Async JavaScript</h3>
+              <p>Learn Promises, Callback functions, and Async/Await execution loops.</p>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; margin-top:var(--space-1)">Reward: +300 XP • Certification ready</div>
+              <button class="btn-primary" onclick="enrollInCourse('Async JavaScript', 300)" style="margin-top:var(--space-2)">Enroll & Start</button>
+            </div>
+            
+            <div class="glass-card">
+              <span class="badge-tag">INTERMEDIATE</span>
+              <h3>Express Server Architecture</h3>
+              <p>Build RESTful microservices, setup static asset paths, and coordinate routers.</p>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; margin-top:var(--space-1)">Reward: +500 XP • Certification ready</div>
+              <button class="btn-primary" onclick="enrollInCourse('Express Server Architecture', 500)" style="margin-top:var(--space-2)">Enroll & Start</button>
+            </div>
 
-    </main>
+            <div class="glass-card">
+              <span class="badge-tag">ADVANCED</span>
+              <h3>Relational Databases</h3>
+              <p>Integrate database entities, schema normalization, and write indexing parameters.</p>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; margin-top:var(--space-1)">Reward: +800 XP • Certification ready</div>
+              <button class="btn-primary" onclick="enrollInCourse('Relational Databases', 800)" style="margin-top:var(--space-2)">Enroll & Start</button>
+            </div>
+          </div>
+        </section>
 
-    <!-- Footer Area -->
-    <footer class="app-footer">
-      <div>FIFA World Cup 2026 Smart Stadium Platform • Powered by Gemini GenAI</div>
-      <div>Current Local Time: <span id="current-time">2026-07-08 14:30:37</span></div>
-    </footer>
+        <!-- Tab: Playground -->
+        <section class="workspace-content" id="view-playground">
+          <div class="playground-grid">
+            
+            <!-- Custom Monaco Emulator Workspace -->
+            <div class="editor-shell">
+              <div class="editor-head">
+                <div style="display:flex; align-items:center; gap:var(--space-1);">
+                  <i class="fa-solid fa-code" style="color:var(--color-primary);"></i>
+                  <span style="font-family:monospace; font-size:0.8rem; font-weight:700;">sandbox.js</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--space-1)">
+                  <button class="btn-outline" style="padding:4px 10px; font-size:0.75rem;" onclick="runPlaygroundCode()"><i class="fa-solid fa-play"></i> Run Code</button>
+                  <button class="btn-outline" style="padding:4px 10px; font-size:0.75rem;" onclick="runAICodeReview()"><i class="fa-solid fa-circle-check"></i> Code Review</button>
+                  <button class="btn-outline" style="padding:4px 10px; font-size:0.75rem;" onclick="runAIBugFinder()"><i class="fa-solid fa-bug"></i> Bug Finder</button>
+                </div>
+              </div>
+              
+              <!-- Code input area -->
+              <textarea class="editor-textarea" id="playground-code-area" placeholder="// Write Javascript code here...
+function calculateFactorial(n) {
+  if (n === 0 || n === 1) return 1;
+  return n * calculateFactorial(n - 1);
+}
+console.log(calculateFactorial(5));">function calculateFactorial(n) {
+  if (n === 0 || n === 1) return 1;
+  return n * calculateFactorial(n - 1);
+}
+console.log(calculateFactorial(5));</textarea>
+              
+              <!-- Console container -->
+              <div class="editor-console" id="playground-console-logs">
+                &gt;_ Console ready. Click 'Run Code' or request AI audits.
+              </div>
+            </div>
+
+            <!-- Diagnostics Response Card -->
+            <div class="glass-card" style="height:100%; overflow-y:auto;">
+              <div class="card-header" style="padding:0 0 var(--space-2) 0;">
+                <div class="header-title">
+                  <i class="fa-solid fa-microscope" style="color:var(--color-secondary);"></i>
+                  <div>
+                    <h3>AI Analytics Inspector</h3>
+                    <p class="subtitle">Realtime code review output and debug summaries</p>
+                  </div>
+                </div>
+              </div>
+              <div class="diagnostic-box" id="playground-diagnostic-res" style="font-size:0.85rem; line-height:1.6; white-space:pre-wrap; color:var(--text-muted);">
+                Compile or request reviews to trigger diagnostics output logs...
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Tab: AI Mentor Chat -->
+        <section class="workspace-content" id="view-mentor">
+          <div class="portal-grid fan-grid" style="grid-template-columns: 1fr 340px; height:calc(100vh - 120px);">
+            
+            <!-- Chat Card -->
+            <div class="dashboard-card glass-panel chat-card" style="height:100%; min-height:auto;">
+              <div class="card-header">
+                <div class="header-title">
+                  <i class="fa-solid fa-robot"></i>
+                  <div>
+                    <h3>AI Learning Companion</h3>
+                    <p class="subtitle">Multilingual virtual assistant coordinator</p>
+                  </div>
+                </div>
+                <div class="language-selector">
+                  <select id="mentor-lang-select" onchange="changeMentorLanguage()">
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="es">🇲🇽 ES</option>
+                    <option value="fr">🇨🇦 FR</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Message feed -->
+              <div class="chat-messages" id="mentor-chat-messages">
+                <div class="message system-msg">
+                  <p>Copa AI online. Ask for roadmaps, syntactic explanations, or code reviews.</p>
+                </div>
+                <div class="message ai-msg">
+                  <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                  <div class="msg-content">
+                    <p id="mentor-welcome-txt">Hello! I am Copa, your AI learning assistant. How can I help you in your development journey today?</p>
+                    <button class="audio-speak-btn" onclick="speakMentorWelcome()"><i class="fa-solid fa-volume-high"></i> Listen to Copa</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Speech Waveform -->
+              <div class="audio-waveform-box" id="mentor-audio-waveform" style="display:none;">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-text">AI Audio Companion Speaking...</span>
+                <button class="wave-stop-btn" onclick="stopSpeechEngine()"><i class="fa-solid fa-square"></i></button>
+              </div>
+
+              <!-- Input Row -->
+              <div class="chat-input-bar">
+                <input type="text" id="mentor-chat-input" placeholder="Ask Copa about JavaScript closures, Promises, Event Loops..." onkeypress="handleMentorChatKey(event)">
+                <button class="send-btn" onclick="sendMentorChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+
+            <!-- Quick Suggestions sidebar -->
+            <div class="glass-card" style="padding:var(--space-2); height:100%; overflow-y:auto;">
+              <h3>Quick AI Prompts</h3>
+              <div class="chat-suggestions" style="background:transparent; border:none; padding:var(--space-1) 0; flex-direction:column; gap:var(--space-1); align-items:stretch;">
+                <span class="suggestion-tag" onclick="sendSuggestedMentorQuery('Generate study roadmap')">🗺️ JavaScript Roadmap</span>
+                <span class="suggestion-tag" onclick="sendSuggestedMentorQuery('Explain closures in Javascript')">🔒 Explain Closures</span>
+                <span class="suggestion-tag" onclick="sendSuggestedMentorQuery('Explain event loops')">🔄 Explain Event Loops</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Tab: Career Assistant -->
+        <section class="workspace-content" id="view-career">
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:var(--space-3); height:calc(100vh - 120px);">
+            
+            <!-- Resume Auditor and Coach -->
+            <div style="display:flex; flex-direction:column; gap:var(--space-3); height:100%;">
+              <div class="glass-card" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+                <h3>AI Resume Analyzer</h3>
+                <p class="subtitle">Paste raw resume text to audit keyword density against standard tech roles</p>
+                <textarea id="resume-textarea" class="form-input" style="flex:1; resize:none; font-family:var(--font-body); font-size:0.85rem; margin-top:var(--space-1);" placeholder="Paste resume elements here..."></textarea>
+                <button class="btn-primary" onclick="auditDeveloperResume()" style="align-self:flex-end; margin-top:var(--space-2)"><i class="fa-solid fa-file-waveform"></i> Audit Resume</button>
+              </div>
+            </div>
+
+            <!-- Diagnostics Panel -->
+            <div class="glass-card" style="height:100%; overflow-y:auto;">
+              <div class="card-header" style="padding:0 0 var(--space-2) 0;">
+                <div class="header-title">
+                  <i class="fa-solid fa-briefcase" style="color:var(--color-info);"></i>
+                  <div>
+                    <h3>AI Career Coach Feedback</h3>
+                    <p class="subtitle">Resume score audits and Interview coach logs</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Tabs internally inside career -->
+              <div style="display:flex; background:rgba(0,0,0,0.1); border:1px solid var(--border-color); padding:2px; border-radius:8px; margin-bottom:var(--space-2)">
+                <button class="tab-btn active" id="career-tab-resume" onclick="toggleCareerSubTab('resume')" style="padding:4px 8px; font-size:0.75rem; flex:1;">Resume Diagnostics</button>
+                <button class="tab-btn" id="career-tab-interview" onclick="toggleCareerSubTab('interview')" style="padding:4px 8px; font-size:0.75rem; flex:1;">Interview practice</button>
+              </div>
+
+              <!-- Sub-tab panel 1: Resume -->
+              <div id="career-panel-resume" style="font-size:0.85rem; color:var(--text-muted); line-height:1.6; white-space:pre-wrap;">
+                Write and audit your resume on the left panel to output career optimization details.
+              </div>
+
+              <!-- Sub-tab panel 2: Interview -->
+              <div id="career-panel-interview" style="display:none; flex-direction:column; gap:var(--space-2)">
+                <div id="interview-coach-log" style="font-size:0.85rem; color:var(--text-muted); max-height:220px; overflow-y:auto; border:1px solid var(--border-color); padding:var(--space-1); border-radius:8px; background:rgba(0,0,0,0.2)">
+                  💼 AI Interviewer: Welcome. Click 'Start Coach Practice' below to trigger an interview loop simulation.
+                </div>
+                <input type="text" id="interview-answer-input" class="form-input" placeholder="Type your interview answer here..." style="display:none;">
+                <button class="btn-primary" id="interview-action-btn" onclick="startInterviewCoach()"><i class="fa-solid fa-microphone"></i> Start Coach Practice</button>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Tab: Leaderboard -->
+        <section class="workspace-content" id="view-leaderboard">
+          <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-3);">
+            <h2>Global Standings leaderboard</h2>
+            <p>Standings calculated based on total experience points accrued.</p>
+          </div>
+
+          <div class="glass-card" style="padding:0; overflow:hidden;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:left;">
+              <thead>
+                <tr style="background:rgba(0,0,0,0.2); border-bottom:1px solid var(--border-color);">
+                  <th style="padding:var(--space-2);">Rank</th>
+                  <th style="padding:var(--space-2);">Developer</th>
+                  <th style="padding:var(--space-2);">Level</th>
+                  <th style="padding:var(--space-2);">XP accrued</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-table-rows">
+                <!-- Javascript builds rows -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab: Certificates -->
+        <section class="workspace-content" id="view-certificates">
+          <div class="section-head" style="align-items:flex-start; margin-bottom:var(--space-3);">
+            <h2>Your Certifications & Badges</h2>
+            <p>Earn certificates by completing syllabus courses.</p>
+          </div>
+
+          <div id="certificates-grid-container" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:var(--space-3)">
+            <!-- Dynamic elements loaded here -->
+          </div>
+        </section>
+
+      </main>
+
+    </div>
 
   </div>
 
-  <!-- JavaScript application file -->
-  <script src="app.js"></script>
+  <!-- Toast notification list container -->
+  <div class="toast-container" id="toast-root"></div>
+
+  <!-- App Bootstrap JS -->
+  <script src="src/app.js" type="module"></script>
 </body>
 </html>
