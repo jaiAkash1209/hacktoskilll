@@ -1,17 +1,16 @@
-/* HackSkill Production-Ready UI Components - Strict Constraints */
+/* HackSkill SaaS Clean Components - Flat Gray Aesthetic */
 
-/* Flat Cards (Strict rule 7: max card border radius 12px) */
+/* Compact Bounded Cards (Strict rule 7: max card border radius 12px) */
 .glass-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-card); /* 10px (under 12px) */
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-card); /* 10px */
   padding: var(--space-2);
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  box-sizing: border-box;
   transition: var(--transition-fast);
-  position: relative;
   /* Rule 13: Cards contain useful information, not decoration. No floating. */
   transform: none !important;
   box-shadow: var(--shadow-sm) !important;
@@ -33,7 +32,7 @@
   color: var(--text-inverse);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 14px;
   padding: 0 var(--space-2);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
@@ -41,6 +40,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  box-sizing: border-box;
   transition: var(--transition-fast);
 }
 
@@ -55,7 +55,7 @@
   color: var(--text-primary);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 14px;
   padding: 0 var(--space-2);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
@@ -63,6 +63,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  box-sizing: border-box;
   transition: var(--transition-fast);
 }
 
@@ -71,7 +72,7 @@
   border-color: var(--text-muted);
 }
 
-/* Form inputs matching compact design */
+/* Form inputs */
 .form-input {
   height: 40px;
   background-color: var(--bg-sidebar);
@@ -79,9 +80,10 @@
   color: var(--text-primary);
   border-radius: var(--border-radius-sm);
   padding: 0 var(--space-2);
-  font-size: 0.85rem;
+  font-size: 14px;
   outline: none;
   font-family: var(--font-body);
+  box-sizing: border-box;
   transition: var(--transition-fast);
 }
 
@@ -100,7 +102,7 @@
   gap: var(--space-1);
 }
 
-/* Monaco Code Playground Editor components */
+/* Editor Workspace Styles */
 .editor-shell {
   background-color: #1c1c21;
   border: 1px solid var(--border-color);
@@ -127,7 +129,7 @@
   border: none;
   color: #38bdf8;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 13px;
   padding: var(--space-2);
   resize: none;
   outline: none;
@@ -139,12 +141,12 @@
   border-top: 1px solid var(--border-color);
   padding: var(--space-2);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--color-success);
   overflow-y: auto;
 }
 
-/* Flat Command Palette Dialog */
+/* Command Palette Overlay */
 .palette-overlay {
   position: fixed;
   top: 0;
@@ -237,7 +239,7 @@
   border-radius: 3px;
 }
 
-/* Flat Accordion */
+/* Accordion */
 .accordion-item {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -267,7 +269,7 @@
   display: block;
 }
 
-/* Flat Notifications (Toasts) */
+/* Toasts */
 .toast-container {
   position: fixed;
   bottom: var(--space-2);
@@ -296,7 +298,7 @@
   flex: 1;
 }
 
-/* Leaderboard Rank Badges */
+/* Ranks */
 .rank-badge {
   width: 20px;
   height: 20px;
@@ -311,14 +313,45 @@
 .rank-2 { background-color: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid var(--border-color); }
 .rank-3 { background-color: rgba(205, 127, 50, 0.15); color: #c084fc; border: 1px solid #c084fc; }
 
-/* Flat Telemetry Dashboards */
-.telemetry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-2);
+/* Dashboard Widgets details */
+.progress-bar-container {
+  background-color: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  overflow: hidden;
 }
 
-.telemetry-chart-container {
-  height: 140px;
-  margin-top: var(--space-2);
+.progress-bar-fill {
+  background-color: var(--color-primary);
+  height: 100%;
+  border-radius: 50px;
+}
+
+.eco-actions-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eco-check-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  background-color: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 6px var(--space-2);
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: var(--transition-fast);
+}
+
+.eco-check-item.completed {
+  opacity: 0.6;
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.eco-check-item i {
+  color: var(--color-success);
 }
