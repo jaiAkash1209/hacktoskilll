@@ -3,7 +3,7 @@
  * Offline Cache Coordinator
  */
 
-const CACHE_NAME = 'hackskill-cache-v1';
+const CACHE_NAME = 'hackskill-cache-v2'; // Cache version bump to clear v1
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -20,7 +20,7 @@ const ASSETS_TO_CACHE = [
   '/src/components/search/CommandPalette.js',
   '/server.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap'
+  'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
 ];
 
 // Install Event
@@ -53,37 +53,55 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Interceptor
 self.addEventListener('fetch', (event) => {
-  // Only intercept HTTP/HTTPS GET queries
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      
-      // Fallback network fetch
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200) {
+  const isHTML = event.request.headers.get('accept')?.includes('text/html');
+
+  if (isHTML) {
+    // Network-First for HTML: fetch from network, update cache, fallback to cache on offline failure
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              if (event.request.url.startsWith('http')) {
+                cache.put(event.request, responseToCache);
+              }
+            });
+          }
           return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            return caches.match('/index.html');
+          });
+        })
+    );
+  } else {
+    // Cache-First for static assets
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
 
-        // Cache on the fly
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          // Only cache HTTP/HTTPS URLs (avoid caching chrome extension assets)
-          if (event.request.url.startsWith('http')) {
-            cache.put(event.request, responseToCache);
+        return fetch(event.request).then((networkResponse) => {
+          if (!networkResponse || networkResponse.status !== 200) {
+            return networkResponse;
           }
-        });
 
-        return networkResponse;
-      });
-    }).catch(() => {
-      // Offline fallback handling
-      if (event.request.headers.get('accept').includes('text/html')) {
-        return caches.match('/index.html');
-      }
-    })
-  );
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            if (event.request.url.startsWith('http')) {
+              cache.put(event.request, responseToCache);
+            }
+          });
+
+          return networkResponse;
+        });
+      })
+    );
+  }
 });

@@ -16,7 +16,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // PWA Service Worker registration
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('[PWA]: Service Worker registered successfully', reg.scope))
+      .then(reg => {
+        console.log('[PWA]: Service Worker registered successfully', reg.scope);
+        reg.update(); // Trigger immediate update checks on reload to clear cache-v1
+      })
       .catch(err => console.error('[PWA]: Service Worker registration failed:', err));
   }
 
