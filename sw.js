@@ -3,7 +3,7 @@
  * Offline Cache Coordinator
  */
 
-const CACHE_NAME = 'hackskill-cache-v2'; // Cache version bump to clear v1
+const CACHE_NAME = 'hackskill-cache-v3'; // Cache version bump to clear v2
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
