@@ -23,6 +23,11 @@ window.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error('[PWA]: Service Worker registration failed:', err));
   }
 
+  // Expose components globally to window scope for HTML click binders
+  window.CommandPalette = CommandPalette;
+  window.store = store;
+  window.ACTIONS = ACTIONS;
+
   // Boot Command Palette Ctrl+K spotlight
   CommandPalette.init();
 
